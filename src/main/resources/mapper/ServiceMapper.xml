@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.ServiceMapper">
+
+    <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+   	<resultMap id="serviceResult" type="userService" extends="superResult">	
+		<result property="title"           column="title"       	  jdbcType="VARCHAR"/>
+		<result property="userId"          column="user_id"           jdbcType="VARCHAR"/>
+		<result property="country"         column="country"           jdbcType="VARCHAR"/>
+		<result property="category"        column="category"  		  jdbcType="VARCHAR"/>
+		<result property="brand"           column="brand"             jdbcType="VARCHAR"/>
+		<result property="subtype"         column="subtype"           jdbcType="VARCHAR"/>	
+		<result property="attr"            column="attr"      		  jdbcType="VARCHAR"/>	
+		<result property="original"        column="original"       	  jdbcType="VARCHAR"/>
+		<result property="price"           column="price"       	  jdbcType="DECIMAL"/>
+		<result property="priceType"       column="pricetype"         jdbcType="INTEGER"/>		
+		<result property="originPrice"     column="originprice"       jdbcType="DECIMAL"/>
+		<result property="postPrice"       column="postprice"         jdbcType="DECIMAL"/>
+		<result property="servicePrice"    column="serviceprice"      jdbcType="DECIMAL"/>		
+		<result property="description"     column="description"       jdbcType="VARCHAR"/>
+		<result property="pricedetail"     column="pricedetail"       jdbcType="VARCHAR"/>
+		<result property="servicedetail"   column="servicedetail"  	  jdbcType="VARCHAR"/>
+		<result property="recommendation"  column="recommendation"    jdbcType="INTEGER"/>
+		<result property="ordercount"      column="ordercount"        jdbcType="INTEGER"/>	
+		<result property="commentcount"    column="commentcount"      jdbcType="INTEGER"/>	
+		<result property="cover"           column="cover"       	  jdbcType="VARCHAR"/>
+		<result property="favoritecount"   column="favoritecount"     jdbcType="INTEGER"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+    
+    <insert id="save" parameterType="userService">
+		insert into t_service (id,title,user_id,country,category,brand,subtype,attr,original,price,pricetype,originprice,postprice,serviceprice,description,pricedetail,
+		servicedetail,recommendation,cover,status,operator,operate_time)
+		values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR},
+		#{category,jdbcType=VARCHAR},#{brand,jdbcType=VARCHAR},#{subtype,jdbcType=VARCHAR},#{attr,jdbcType=VARCHAR},#{original,jdbcType=VARCHAR},
+		#{price,jdbcType=DECIMAL},#{priceType,jdbcType=INTEGER},#{originPrice,jdbcType=DECIMAL},#{postPrice,jdbcType=DECIMAL},#{servicePrice,jdbcType=DECIMAL},#{description,jdbcType=VARCHAR},#{pricedetail,jdbcType=VARCHAR},#{servicedetail,jdbcType=VARCHAR},#{recommendation,jdbcType=INTEGER},
+		#{cover,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+    
+    <delete id="deleteById"  parameterType="userService">
+		delete from t_service where id = #{id,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=VARCHAR}
+	</delete>
+    
+   <update id="updateById" parameterType="userService" >
+    update t_service
+    <set >
+	  <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+	  <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>		
+	  <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>				
+	  <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>				
+	  <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>				
+	  <if test="subtype != null" >
+        subtype = #{subtype,jdbcType=VARCHAR},
+      </if>	
+	  <if test="attr != null" >
+        attr = #{attr,jdbcType=VARCHAR},
+      </if>	      
+	  <if test="original != null" >
+        original = #{original,jdbcType=VARCHAR},
+      </if>	   
+	  <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="priceType != null" >
+        pricetype = #{priceType,jdbcType=TINYINT},
+      </if>
+      <if test="originPrice != null" >
+        originprice = #{originPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="postPrice != null" >
+        postprice = #{postPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="servicePrice != null" >
+        serviceprice = #{servicePrice,jdbcType=DECIMAL},
+      </if>     
+	  <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>	         
+	  <if test="pricedetail != null" >
+        pricedetail = #{pricedetail,jdbcType=VARCHAR},
+      </if>	 
+	  <if test="servicedetail != null" >
+        servicedetail = #{servicedetail,jdbcType=VARCHAR},
+      </if>	       
+	  <if test="recommendation != null" >
+        recommendation = #{recommendation,jdbcType=TINYINT},
+      </if>	           
+	  <if test="ordercount != null" >
+        ordercount = ordercount + #{ordercount,jdbcType=TINYINT},
+      </if>	       
+	  <if test="commentcount != null" >
+        commentcount = commentcount + #{commentcount,jdbcType=TINYINT},
+      </if>	     
+      <if test="cover != null" >
+        cover = #{cover,jdbcType=TINYINT},
+      </if>	 
+      <if test="favoritecount != null" >
+        favoritecount = #{favoritecount,jdbcType=TINYINT},
+      </if>	                      		
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+    <select id="selectById" parameterType="string" resultMap="serviceResult">
+        select id, title, user_id, country, category, brand, subtype, attr, original, price,pricetype,originprice,postprice,serviceprice,description, pricedetail, servicedetail, recommendation, ordercount, commentcount, cover, favoritecount,
+		<include refid="superColumn" />
+        from t_service 
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectByIndex" parameterType="userService" resultMap="serviceResult">
+      select id, title, user_id, country, category, brand, subtype, attr, original, price,pricetype,originprice,postprice,serviceprice, description, pricedetail, servicedetail, recommendation, ordercount, commentcount, cover, favoritecount,
+	  <include refid="superColumn" />
+        from t_service 
+        <where>
+            1=1
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+              AND country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="category != null and category != ''">
+              AND category = #{category,jdbcType=VARCHAR}
+            </if>            
+            <if test="brand != null and brand != ''">
+              AND brand = #{brand,jdbcType=VARCHAR}
+            </if>  
+            <if test="priceType != null">
+              AND pricetype = #{priceType,jdbcType=TINYINT}
+            </if>
+            <if test="subtype != null">
+              AND subtype = #{subtype,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=BIGINT}
+            </if>  
+            <if test="title != null and title != ''">
+              AND title like '%${title}%'
+            </if>                     
+        </where>
+        limit #{offset},#{limit}
+     </select>
+    
+    <select id="selectByIndexCount" parameterType="order" resultType="int">
+        select count(1) as count
+        from t_service 
+        <where>
+            1=1
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+              AND country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="category != null and category != ''">
+              AND category = #{category,jdbcType=VARCHAR}
+            </if>            
+            <if test="brand != null and brand != ''">
+              AND brand = #{brand,jdbcType=VARCHAR}
+            </if> 
+           <if test="priceType != null">
+              AND pricetype = #{priceType,jdbcType=TINYINT}
+            </if>
+            <if test="subtype != null and subtype != ''">
+              AND subtype = #{subtype,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=BIGINT}
+            </if>
+            <if test="title != null and title != ''">
+              AND title like '%${title}%'
+            </if>                      
+        </where>
+    </select>
+</mapper>

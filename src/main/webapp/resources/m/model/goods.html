@@ -1,0 +1,248 @@
+<div data-page="goods" class="page">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left"><a href="#" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="center">浪琴手表</div>
+    </div>
+  </div>
+  <div class="page-content">
+	  <div class="card goods detail">
+	      <div class="card-content">
+	        <img src="/resources/m/img/images/pomotion-korea.png" width="100%">
+	        <div class="card-content-inner">
+	          <p class="name"><a href="detail.html">What a nice photo i took yesterday!</a></p>
+	          <p class="description">What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!</p>
+	          <div class="item-content buyer-bar">
+                 <div class="item-media avatar"><img src="/resources/m/img/images/pomotion-korea.png"></div>
+                 <div class="item-inner buyer-info">
+                   <div class="item-title"><span class="name">何学苗</span><span class="location">迪拜</span><span class="identify">专职买手</span></div>
+                 </div>
+              </div>
+	          <div class="action-bar">
+	             <span class="price">￥0000 <i class="price-detail">(￥8800+￥800+￥99)</i></span>
+	             <span class="add-backet"><i class="icon icon-f7"></i></span>
+	          </div>
+	        </div>
+	      </div>
+	  </div>
+	  
+	  <div class="content-block-title">评论列表（5）</div>
+	  <div class="list-block media-list comment-list">
+         <ul>
+           <li class="item-content comment-info">
+             <div class="item-media"><img src="http://lorempixel.com/88/88/fashion/4" width="32"></div>
+             <div class="item-inner">
+               <div class="item-title-row">
+                 <div class="item-title"><span class="price">5.0</span><span class="unit">分</span></div>
+                 <div class="item-after"><span class="time">2010-01-11</span></div>
+               </div>
+               <span class="comment">What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!</span>
+             </div>
+           </li>
+           <li class="item-content comment-info">
+             <div class="item-media"><img src="http://lorempixel.com/88/88/fashion/4" width="32"></div>
+             <div class="item-inner">
+               <div class="item-title-row">
+                 <div class="item-title"><span class="price">5.0</span><span class="unit">分</span></div>
+                 <div class="item-after"><span class="time">2010-01-11</span></div>
+               </div>
+               <span class="comment">What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!</span>
+             </div>
+           </li>
+           <li class="item-content comment-info">
+             <div class="item-media"><img src="http://lorempixel.com/88/88/fashion/4" width="32"></div>
+             <div class="item-inner">
+               <div class="item-title-row">
+                 <div class="item-title"><span class="price">5.0</span><span class="unit">分</span></div>
+                 <div class="item-after"><span class="time">2010-01-11</span></div>
+               </div>
+               <span class="comment">What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!What a nice photo i took yesterday!</span>
+             </div>
+           </li>
+         </ul>
+     </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	var loadAndRenderUserComment = function(serviceId){
+	    var page = 0;
+	    if(!page || page < 1) {
+	        page = 0;
+	    }
+	    page++;
+	
+	    $.ajax({
+	        url     : '/comment/list?serviceId='+serviceId+'&pageSize='+daidian.config.pageSize+'&page='+page,
+	        success : function(data){
+	            if(data && data.code == '000000') {
+	                if(!data.data || !data.data.count || data.data.count == 0) {
+	                    $('.comment-wrap').append('<li class="list-block media-list comment-list">没有评论</li>');
+	                    return;
+	                }
+	                if((page * daidian.config.pageSize) < data.data.count) {
+	                    $(".paging-bar").show().attr('page',page);
+	                } else {
+	                    $(".paging-bar").hide();
+	                }
+	
+	                var comments = data.data.data || [];
+	                var commentHtml = [];
+	                comments.forEach(function(curData) {
+	                	var user = curData.user || {};
+	                	var service = curData.serviceInfo || {};
+	                    commentHtml.push('<li class="mui-table-view-cell comment-info">');
+	                    commentHtml.push('    <div class="mui-table">');
+	                    commentHtml.push('      <div class="mui-table-cell mui-col-xs-2 mui-text-left">');
+	                    commentHtml.push('         <div class="user-img"><img src="'+getPictureUrl(user.avatar,2)+'" /></div>');
+	                    commentHtml.push('      </div>');
+	                    commentHtml.push('      <div class="mui-table-cell mui-col-xs-7">');
+	                    commentHtml.push('          <h4 class="comment-rate">'+getRate(curData.rate)+'</h4>');
+	                    commentHtml.push('          <h5 class="comment-user">'+(user.nickName)+'</h5>');
+	                    commentHtml.push('      </div>');
+	                    commentHtml.push('      <div class="mui-table-cell mui-col-xs-3 mui-text-right">');
+	                    commentHtml.push('            <span>'+new Date(curData.operateTime).format('MM-dd')+'</span>');
+	                    commentHtml.push('     </div>');
+	                    commentHtml.push('   </div> ');
+	                    commentHtml.push('   <div class="mui-table"> ');
+	                    commentHtml.push('     <div class="mui-table-cell mui-col-xs-12">');
+	                    commentHtml.push('          <p class="mui-h6">'+curData.comment+'</p>');
+	                    
+	                    var pictures = JSON.parse((curData.pictures || '[]')) || [];
+	                    commentHtml.push('<div class="comment-image-list">');
+	                    pictures.forEach(function(picture){
+	                    	commentHtml.push('   <img class="mui-col-xs-3" src="'+getPictureUrl(picture,1,'list')+'"/>');
+	                    });
+	                    commentHtml.push('</div>');
+	                    
+	                    commentHtml.push('     </div>');
+	                    commentHtml.push('   </div>');
+	                    commentHtml.push('   <div class="mui-table">');
+	                    commentHtml.push('      <div class="mui-table-cell mui-col-xs-12 mui-text-right service-title">');
+	                    commentHtml.push('          <a action="/wx/service?id='+service.serviceId+'" class="mui-h6">'+service.title+'</a>');
+	                    commentHtml.push('      </div>');
+	                    commentHtml.push('   </div>');
+	                });
+	                $('.comment-wrap').append(commentHtml.join(''));
+	            } else {
+	                alert('加载用户评论失败，请刷新页面重试');
+	            }
+	        },
+	        error : function() {
+	            alert('加载用户评论失败，请刷新页面重试');
+	        }
+	    });
+	};
+	
+	var loadRenderServiceInfo = function(serviceId) {
+		$.ajax({
+	        url     : '/service?id=' + serviceId+'&rmd='+new Date().getTime(),
+	        success : function(data){
+	            if(data && data.code == '000000') {
+	            	var service = data.data || {};
+	            	var saler = service.userInfo || {};
+	        		$('.name').text(service.title);
+	        		$('.description').text(service.description);
+	        		$('.price').text('¥'+ service.price);
+	        		var pricedetail = '';
+	        		if(service.originPrice){
+	        			pricedetail += '¥'+ service.originPrice;
+	        		}
+	        		if(service.postPrice){
+	        			pricedetail += '¥'+ service.postPrice;
+	        		}
+	        		if(service.servicePrice){
+	        			pricedetail += '¥'+ service.servicePrice;
+	        		}
+	        		
+	        		$('.price-detail').text('('+pricedetail+')');
+	        		
+	        		$('.buyer-bar .avatar').attr('src',saler.avatar);
+	        		
+	        		$('.buyer-info .name').text(saler.nickName);
+	        		$('.buyer-info .location').text(saler.country);
+	        		$('.buyer-info .identify').text(saler.identity);
+
+	    			wx.ready(function(){
+		   	        	 wx.onMenuShareTimeline(getShareContent("timeLine"));
+		   	        	 wx.onMenuShareAppMessage(getShareContent("app"));
+		   	        });
+	            } else {
+	                alert('加载用户信息失败，请刷新页面重试');
+	            }
+	        },
+	        error : function() {
+	            alert('加载用户信息失败，请刷新页面重试');
+	        }
+	    });
+	};
+	
+	$(function() {
+	    var serviceId = getQueryString('id');
+	    loadRenderServiceInfo(serviceId);
+  
+	    /**
+	    $('body').on('tap','.order-submit',function(evt) {
+	        var order = {};
+	        order.count = $('.order-number').val();
+	        order.serviceId = serviceId;
+	        
+	        var btn = $('.order-submit');
+	        btn.text('正在提交').attr('disabled',true);
+	
+	        $.ajax({
+	            type : "post",
+	            url  : "/user/order",
+	            contentType : "application/json;charset=UTF-8",
+	            data        : JSON.stringify(order),
+	            success     : function(data){
+	                btn.text('提交订单').attr('disabled',false);
+	                if(data.code == '000000' && data.data) {
+	                    mui.toast('提交订单成功');
+	                    window.location.href="/wx/order-pay?id="+ data.data;
+	                } else {
+	                    mui.toast(data.msg);
+	                }
+	            },
+	            error     : function() {
+	                btn.text('提交订单').attr('disabled',false);
+	                mui.toast('提交订单出现异常');
+	            }
+	        });
+	
+	    });*/
+	
+	    $('body').on('change','.order-number',function(evt){
+	       var target = $(evt.target);
+	       var price = target.attr('price');
+	       var totalPrice = price * target.val();
+	       $('.total-price-detail').html('(' + target.val() + ' * ' + price + ')');
+	       $('.total-price').html('¥ ' + totalPrice.toFixed(2));
+	    });
+	    
+	    $('body').on('input','.order-number',function(evt){
+	    	
+	    	var target = $(evt.target);
+	    	var val = target.val();
+	    	if(val > 99999) {
+	    		target.val(99999);
+	    	}
+	    	if(val <= 0) {
+	    		val = 1;
+	    		target.val(1);
+	    	}
+	    	
+	        var price = target.attr('price');
+	        var totalPrice = price * target.val();
+	        $('.total-price-detail').html(target.val() + ' * ' + price);
+	        $('.total-price').html('¥ ' + totalPrice.toFixed(2));
+	    });
+	
+	    $('body').on('tap','.paging-bar',function(evt){
+	        evt.preventDefault();
+	        loadAndRenderUserComment(serviceId);
+	    });
+	
+	    $('.paging-bar').trigger('tap');
+	});
+</script>

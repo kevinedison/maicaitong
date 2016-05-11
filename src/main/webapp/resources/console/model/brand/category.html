@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<div class="edit-list-content" style="display:none">
+    <nav>
+	  <ul class="pager">
+	    <li class="back pull-left"><a href="javascript:;"><span aria-hidden="true">&larr;</span> 返回</a></li>
+	  </ul>
+	</nav>         
+	
+	<form class="form-horizontal edit-list-form">
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label">编码</label>
+	    <div class="col-sm-10">
+	      <input class="form-control" id="category-code" name="category-code">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label">名称</label>
+	    <div class="col-sm-10">
+	      <input class="form-control" id="category-name" name="category-name" placeholder="名称">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label">描述</label>
+	    <div class="col-sm-10">
+	      <textarea class="form-control" id="category-description" name="category-description"  rows="3" placeholder="描述"></textarea>
+	    </div>
+	  </div>
+	  
+	 
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10 text-center">
+	      <a class="btn btn-primary save-submit">保存</a>
+	    </div>
+	  </div>
+	</form>
+</div>
+
+<div class="content-info" style="display:none">
+   <nav>
+	  <ul class="pager">
+	    <li class="back pull-left"><a href="javascript:;"><span aria-hidden="true">&larr;</span> 返回</a></li>
+	  </ul>
+	</nav>
+   <table class="table" >
+	    <thead>
+	       <tr>
+	         <th width="200px">属性</th>
+	         <th>属性值</th>
+	       </tr>
+	    </thead>	
+	    <tbody class="content-detail-info" style="min-height:450px;"></tbody>
+	</table>
+</div>
+
+<table class="table table-hover content-list">
+     <thead>
+       <tr>
+         <td colspan="999">
+          <div class="table-operate-bar">
+		   <button type="button" class="btn btn-success add-list-content-btn"><span class="glyphicon glyphicon-plus-sign"></span> 新增 </button>
+	      </div>
+         </td>
+       </tr>
+     </thead>
+  
+     <thead>
+       <tr>
+         <th width="100px">编码</th>
+         <th width="150px">名称</th>
+         <th>描述</th>
+         <th width="220px">操作</th>
+       </tr>
+     </thead>
+     <tbody class="content-wrap" style="min-height:450px;"></tbody>
+     <thead>
+       <tr>
+         <td colspan="999">
+			<nav>
+			  <ul class="pager" page="0">
+			    <li><button class="pre btn btn-primary">上一页</button></li>
+			    <li><button class="next btn btn-primary">下一页</button></li>
+			  </ul>
+			</nav>
+         </td>
+       </tr>
+     </thead>
+</table>
+
+</body>
+<script>
+
+var loadAndRender = function(page,condition) {
+	condition = condition || {};
+	condition.page = page;
+	condition.pageSize = daidian.config.pageSize;
+	$.getJSON("/console/category/list", condition, function(data){
+		if(data && data.code == '000000') {
+            if(!data.data || !data.data.count || data.data.count == 0) {
+                $('.content-wrap').append('<tr><td colspan="999" class="text-center">没有数据</td></tr>');
+                return;
+            }
+
+            if((page * daidian.config.pageSize) < data.data.count) {
+                $(".content-list  .pager .next").attr('disabled',false);
+            } else {
+            	$(".content-list  .pager .next").attr('disabled',true);
+            }
+
+            var contents = data.data.data || [];
+            contents.forEach(function(curData) {
+            	var html = [];
+            	html.push('<tr>');                
+            	html.push('   <td>'+curData.code+'</td>');
+            	html.push('   <td>'+curData.name+'</td>');
+            	//html.push('   <td><img src="'+getPictureUrl(curData.cover)+'" style="height:100px;width:100px;" class="img-rounded"></td>');
+            	html.push('   <td>'+(curData.description || '')+'</td>');
+            	html.push('   <td class="list-row-operate">');
+            	html.push('   	<button type="button" class="btn btn-warning edit">修改</button>');
+            	html.push('   	<button type="button" class="btn btn-danger delete">删除</button>');
+            	html.push('   	<button type="button" class="btn btn-info info">查看详情</button>');
+            	html.push('   </td>');
+            	html.push('</tr>');
+            	$(html.join(' ')).data('data', curData).appendTo('.content-wrap');
+            });
+        } else {
+ 
+        }
+	});
+};
+
+var renderEditForm = function(content) {
+	if(content) {
+    	$('#category-id').val(content.id).attr('disabled',true);
+    	$('#category-name').val(content.name);
+    	$('#category-code').val(content.code);
+    	$('#category-description').val(content.description);
+    	$('.save-submit').attr('content-id',content.id);
+    } 
+};
+
+var renderInfoTable = function(content) {
+	var html = [];
+	html.push('<tr><th>编码</th><td>'+content.code+'</td></tr>');
+	html.push('<tr><th>名称</th><td>'+content.name+'</td></tr>');
+	html.push('<tr><th>描述</th><td>'+(content.description || '')+'</td></tr>');
+	$('.content-detail-info').html(html.join(''));
+};
+
+var emptyEditForm = function() {	
+ 	$('#category-id').val('');
+	$('#category-name').val('');
+	$('#category-code').val('');
+	$('#category-description').val('');
+	$('.save-submit').attr('content-id','');
+};
+
+var initPage = function() {	
+	daidian.config.validateConfig.fields = {
+        "category-code" : {validators: {notEmpty: {message: '编码不能为空！'}}},
+        "category-name"  : {validators: {notEmpty: {message: '名称不能为空！'}}},
+    };	
+    $('.edit-list-form').formValidation(daidian.config.validateConfig);  
+}
+
+
+$(document).ready(function(){
+	initPage();
+	
+	$('.add-list-content-btn').click(function(evt) {
+	   jQuery('.content-list').delay(350).fadeOut(function(){
+		   
+		   $('.save-submit').attr('action','add');  
+		   emptyEditForm();
+	      jQuery('.edit-list-content').delay(350).fadeIn(350);
+	   });
+	});
+	
+	$('.edit-list-content .back,.content-info .back').click(function(evt){
+		jQuery('.content-info,.edit-list-content').delay(350).fadeOut(function(){
+	      jQuery('.content-list').delay(350).fadeIn(350);
+	    });
+	});
+	
+	$('.save-submit').click(function(evt){
+		var target = $(evt.target);
+		if(target.is('a')) {
+			if(!$('.edit-list-form').data('formValidation').validate().isValid()) {
+				return;
+			}
+
+			var type = target.attr('action') || 'add';			
+			var content = {};
+			content.id = $('.save-submit').attr('content-id');
+			content.code = $('#category-code').val();			
+			content.name = $('#category-name').val();
+			content.description = $('#category-description').val();
+			
+			$.ajax({
+		        type : (type == "add" ? "post" : "put"),
+		        url  : "/console/category",
+		        data        : JSON.stringify(content),
+		        contentType : "application/json;charset=UTF-8",
+		        success     : function(data){
+		            if(data.code == '000000') {
+		            	$(".content-list .pager").attr('page',0);
+						$('.content-wrap').html(' ');
+						$('.content-list .pager .next').trigger('click');
+						$('.edit-list-content .back').trigger('click');
+		            } else {
+		                
+		            }
+		        },
+		        error     : function() {
+		           
+		        }
+		    });
+		}
+	});
+	
+	
+	$('body').on('click','.list-row-operate button', function (evt) {
+		var target = $(evt.target);
+	    if(target.is('button')) {
+	    	var data = target.closest('tr').data("data");
+	    	console.log(data.id);
+	    	if(!data) {return;}
+	    	
+	    	if(target.hasClass("edit")) {
+	    		jQuery('.content-list').delay(350).fadeOut(function(){
+	    			$('.save-submit').attr('action','edit');
+	    		    jQuery('.edit-list-content').delay(350).fadeIn(350,renderEditForm(data));
+	    		});
+	    	} else if(target.hasClass("delete")) {
+	    		var option = {};
+	    		option.title = '删除确认';
+	    		option.content = '请确定删除该条记录？';
+	    		option.yesBind = function() {
+	    			$.ajax({
+	    		        type : "delete",
+	    		        url  : "/console/category?id="+data.id+'&rmd='+new Date().getTime(),
+	    		        success     : function(data){
+	    		            if(data.code == '000000') {
+	    		            	target.closest('tr').slideUp(200);
+	    		            } else {
+	    		                
+	    		            }
+	    		        },
+	    		        error     : function() {
+	    		        }
+	    		    });
+	    			return true;
+	    		};	
+	    		confirmDialog(option);
+	    	} else if(target.hasClass("info")) {			
+	    		jQuery('.content-list').delay(350).fadeOut(function(){
+	    		    jQuery('.content-info').delay(350).fadeIn(350,renderInfoTable(data));
+	    		});
+	    	}
+	    }
+    });
+	
+	$('.content-list .pager button').click(function(evt) {
+		var target = $(evt.target);
+		var page = $(".content-list .pager").attr('page') || 0; 
+		if(target.hasClass('pre')) {
+			page--;
+		} else if(target.hasClass('next')){
+			page++;
+		}
+		if(page < 1) {page = 1;}
+	        	
+		if(page == 1) {
+			$(".content-list .pager .pre").attr('disabled',true);
+	    } else {
+	    	$(".content-list .pager .pre").attr('disabled',false);
+	    } 
+		
+		$(".content-list .pager").attr('page',page);
+		$('.content-wrap').html('');
+		loadAndRender(page);
+	});	
+	
+	$('.content-list .pager .next').trigger('click');
+});
+</script>
+</html>

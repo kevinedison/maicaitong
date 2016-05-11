@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.TaskMapper">
+
+	<resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="locationResult" type="location" extends="superResult">
+	    <result property="countryId"      column="country_id"     jdbcType="VARCHAR"/>
+		<result property="code"           column="code"           jdbcType="VARCHAR"/>
+		<result property="name"           column="name"           jdbcType="VARCHAR"/>
+		<result property="title"          column="title"          jdbcType="VARCHAR"/>
+		<result property="coordinate"     column="coordinate"     jdbcType="VARCHAR"/>
+		<result property="phoneCode"      column="phone_code"     jdbcType="VARCHAR"/>
+		<result property="picture"        column="picture"        jdbcType="VARCHAR"/>
+		<result property="description"    column="description"    jdbcType="VARCHAR"/>
+		<result property="recommendation" column="recommendation" jdbcType="INTEGER"/>
+		<result property="buyerCount"     column="buyer_count"    jdbcType="INTEGER"/>
+		<result property="serviceCount"   column="service_count"  jdbcType="INTEGER"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+    <!--insert id="save" parameterType="comment">
+		insert into t_comment (id,userid,serviceId, servicetitle,comment,rate,pic,
+		status, operator, operate_time)
+		values (#{id,jdbcType=VARCHAR},#{userid,jdbcType=VARCHAR},#{serviceid,jdbcType=VARCHAR}, #{servicetitle,jdbcType=VARCHAR},
+		#{comment,jdbcType=VARCHAR},#{rate,jdbcType=INTEGER},#{pic,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert-->
+      
+    <select id="staticBuyer" resultMap="locationResult">
+        select country code,count(country) buyer_count from t_user where identity_auth = 1 group by country
+    </select>
+    
+    <select id="staticService" resultMap="locationResult">
+        select country code,count(country) service_count from t_service where status = 1 group by country
+    </select>
+    
+    <!--delete id="deleteById" parameterType="string">
+		delete from t_comment where id = #{id,jdbcType=VARCHAR}
+	</delete-->
+	
+	<update id="batchUpdateBuyer"  parameterType="java.util.List">   
+       <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+                update t_location 
+                <set>
+                  buyer_count = ${item.buyerCount},service_count = ${item.serviceCount}
+                </set>
+                where lower(code) = #{item.code}
+       </foreach>        
+    </update>
+    
+    <insert id="saveStatic">
+    	<![CDATA[insert into t_order_daystatic(serviceid,servicecontent,userid,ordercount,static_time) select serviceid,servicecontent,saleid,count(1),DATE_FORMAT(operate_time,'%Y-%m-%d') from t_order where status not in (0,1,9) 
+		and staticflag = 0 and operate_time < DATE_FORMAT(now(),'%Y-%m-%d')
+		group by saleid,DATE_FORMAT(operate_time,'%Y-%m-%d') order by operate_time asc]]>
+    </insert>
+    
+    <update id="updateStaticOrder">
+    	<![CDATA[update t_order set staticflag = 1
+		where status not in (0,1,9) and staticflag = 0 and operate_time < DATE_FORMAT(now(),'%Y-%m-%d')]]>
+    </update>
+    
+    <insert id ="insertBatch" parameterType="List">
+    	insert into t_page_view(remoteip,serverip,requesturl,requestparam,reqid,operator,operate_time) values
+    	<foreach collection ="list" item ="item" index ="index" separator =","> 
+        	(#{item.clientIp},#{item.hostIp},#{item.pageUrl},#{item.reqParam},#{item.reqId},#{item.operator},#{item.operateTime}) 
+    	</foreach> 
+	</insert>
+	
+	<insert id ="insertBatchViewStatic" parameterType="List">
+    	insert into t_view_daystatic(serviceid,servicecontent,userid,viewcount,static_time,operate_time) values
+    	<foreach collection ="list" item ="item" index ="index" separator =","> 
+        	(#{item.serviceId},#{item.serviceContent},#{item.userId},#{item.count},#{item.staticTime},now()) 
+    	</foreach> 
+	</insert>
+	
+	<delete id="deleteById" parameterType="order">
+		delete from t_order where id = #{id,jdbcType=VARCHAR} and buyerid = #{buyerId,jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteOverNeedOrder">
+		<![CDATA[delete from t_order where status = 0 and date_add(operate_time, interval 10 minute) <= now()]]>
+	</delete>
+</mapper>

@@ -1,0 +1,59 @@
+body {background: #fff;font-family: Tahoma,Arial,Helvetica,"Microsoft YaHei New","Microsoft Yahei","微软雅黑",SimSun,STXihei,"华文细黑",sans-serif;line-height: 21px;color: #676a6c;}
+ul {list-style: none;margin: 0;padding: 0;}
+
+.image-list {width: 100%;height: 85px;background-size: cover;overflow: hidden;padding: 5px 10px 0px 0px;}
+.image-item {width: 65px;height: 65px;background-image: url(../images/iconfont-tianjia.png);background-size: 100% 100%;display: inline-block;position: relative;border-radius: 5px;margin-right: 10px;border: solid 1px #e8e8e8;}
+.image-item input[type="file"] {position: absolute;left: 0px;top: 0px;width: 100%;height: 100%;opacity: 0;cursor: pointer;z-index: 0;}
+.image-item .image-close {position: absolute;display: inline-block;right: -6px;top: -6px;width: 20px;height: 20px;text-align: center;line-height: 16px;border-radius: 12px;background-color: #FF5053;color: #f3f3f3;border: solid 1px #FF5053;font-size: 9px;font-weight: 200;z-index: 1;  cursor: pointer;}
+
+
+#page-preloader {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.1);z-index: 10000; }
+#page-status {width: 30px;height: 30px;position: absolute;left: 50%; top: 50%;margin: -15px 0 0 -15px;font-size: 32px;}
+
+.leftpanel {width: 240px; position: absolute;top: 0;left: 0; z-index: 100;background: #fff;border-right:1px solid #e8e8e8}
+.login-user-info{text-align:center}
+.login-user-info .media-object{height: 80px;width: 80px;display: inline-block;border-radius: 50%;margin-top: 10px;}
+
+.nav-bracket{border-top:1px solid #e8e8e8;  margin-top: 15px;}
+.nav-bracket > li > a {color: #a7b1c2;font-weight: 600;padding: 14px 20px 14px 25px;}
+.nav-bracket > li > a:hover,.nav-bracket > li > a:active,.nav-bracket > li > a:focus {background-color: #eee;color: #1d2939;}
+.nav-bracket > li.nav-parent:after{position: absolute;right: 0;bottom: 0;left: 0px;height: 1px;content: '';-webkit-transform: scaleY(.5);transform: scaleY(.5);background-color: #c8c7cc;}
+.nav-bracket > li.nav-parent > a {background: transparent url(../images/plus-white.png) no-repeat 92% center; }
+.nav-bracket > li.nav-parent > a:focus {background-color: #eee;color: #8F939E;}
+.nav-bracket > li.nav-parent > a:hover,.nav-bracket > li.nav-parent > a:active {color: #1d2939;background-color: #eee; background-image: url(../images/plus.png);}
+.nav-bracket > li.nav-active > a {background-color: #fff;background-image: url(../images/minus.png); color: #1d2939;}
+.nav-bracket > li.nav-active > a:hover {background-image: url(../images/minus.png);background-repeat: no-repeat;}
+.nav-bracket > li.nav-active > a:focus {color: #1d2939;}
+
+.nav-bracket li .fa,.nav-bracket li .glyphicon {font-size: 16px;vertical-align: middle;margin-right: 10px; width: 16px;text-align: center;}
+.nav-bracket .children > li > a {color: #94989d; font-size: 13px;display: block;padding: 5px 0 5px 65px;cursor: pointer;}
+.nav-bracket .children > li > a:hover,.nav-bracket .children > li > a:active,.nav-bracket .children > li > a:focus {text-decoration: none;color: #165a63;background-color: #eee;}
+
+
+
+.mainpanel {margin-left: 240px;min-height: 1000px;}
+.main-content{padding:25px;}
+.main-content .index-nav{text-align:center;  margin-top: 200px;}
+.main-content .index-nav .media-object{display:inline-block;}
+.main-content .edit-list-form{text-align:left;width:60%; padding-top: 30px;padding-left:65px;}
+
+.content-wrap td,.content-wrap th{vertical-align: middle!important;}
+.content-wrap .list-row-operate{}
+
+.header{height:50px;border-bottom: 1px solid #e8e8e8;}
+.header-left {float: left;}
+.header-right {float: right;}
+.menutoggle {float: left;width: 50px;height: 50px;font-size: 22px;cursor: pointer;float: left;color: #1d2939;border-right: 1px solid #eee;-moz-transition: all 0.2s ease-out 0s;-webkit-transition: all 0.2s ease-out 0s;transition: all 0.2s ease-out 0s;}
+.menutoggle:hover {color: #1d2939;background-color: #f7f7f7;}
+.menutoggle .fa,.menutoggle .glyphicon {margin: 14px 0 0 15px;}
+
+.table-operate-bar{height:50px;  text-align: right;}
+
+.lockedpanel { width: 250px;margin: 10% auto 0 auto;text-align: center;}
+.lockedpanel .loginuser {text-align: center;}
+.lockedpanel .loginuser img {-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;background: rgba(255,255,255,0.4); padding: 5px;}
+.lockedpanel .locked {font-size: 42px;margin-bottom: 20px;}
+.lockedpanel .logged {margin-top: 20px;}
+.lockedpanel .logged h4 {margin: 0;font-size: 21px;color: #333;}
+.lockedpanel form {margin-top: 20px;}
+.lockedpanel form .btn {display: block;margin-top: 10px;}

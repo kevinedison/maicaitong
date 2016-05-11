@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.CommentMapper">
+
+    <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="commentResult" type="comment" extends="superResult">
+	    <result property="userId"          column="userid"         jdbcType="VARCHAR"/>
+	    <result property="orderId"         column="orderid"        jdbcType="VARCHAR"/>
+		<result property="serviceId"       column="serviceid"      jdbcType="VARCHAR"/>
+		<result property="comment"         column="comment"        jdbcType="VARCHAR"/>
+		<result property="rate"       	   column="rate"           jdbcType="INTEGER"/>
+		<result property="pictures"        column="pictures"       jdbcType="VARCHAR"/>
+		<result property="tarUserId"       column="taruserid"      jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+    <insert id="save" parameterType="comment">
+		insert into t_comment (id,userid,orderid,serviceid,taruserid,comment,rate,pictures,
+		status, operator, operate_time)
+		values (#{id,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR},
+		#{tarUserId,jdbcType=VARCHAR},#{comment,jdbcType=VARCHAR},#{rate,jdbcType=INTEGER},#{pictures,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+    
+    <delete id="deleteById" parameterType="comment">
+		delete from t_comment where id = #{id,jdbcType=VARCHAR} and userid = #{userId,jdbcType=VARCHAR}
+	</delete>
+
+    <select id="selectById" parameterType="string" resultMap="commentResult">
+        select id,userid,orderid,serviceid,taruserid,comment,rate,pictures,
+		<include refid="superColumn" />
+        from t_comment 
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectOne" parameterType="comment" resultMap="commentResult">
+        select id,userid,orderid,serviceid,taruserid,comment,rate,pictures,
+		<include refid="superColumn" />
+        from t_comment 
+        <where>
+        	<if test="id != null">
+              AND id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND userid = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null and orderId != ''">
+              AND orderid = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="tarUserId != null and tarUserId != ''">
+              AND taruserid = #{tarUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="serviceId != null and serviceId != ''">
+              AND serviceid = #{serviceId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+    
+    
+    <select id="selectByIndex" parameterType="comment" resultMap="commentResult">
+        select id,userid,orderid,serviceid,taruserid,comment,rate,pictures,
+		<include refid="superColumn" />
+        from t_comment 
+        <where>
+            <if test="id != null">
+              AND id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND userid = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null and orderId != ''">
+              AND orderid = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="tarUserId != null and tarUserId != ''">
+              AND taruserid = #{tarUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="serviceId != null and serviceId != ''">
+              AND serviceid = #{serviceId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+    
+    <select id="selectByIndexCount" parameterType="comment" resultType="int">
+        select count(1) as count
+        from t_comment  
+        <where>
+            <if test="id != null">
+              AND id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND userid = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null and orderId != ''">
+              AND orderid = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="tarUserId != null and tarUserId != ''">
+              AND taruserid = #{tarUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="serviceId != null and serviceId != ''">
+              AND serviceid = #{serviceId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

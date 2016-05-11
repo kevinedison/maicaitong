@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.FeedbackMapper">
+   <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="feedbackResult" type="feedback" extends="superResult">
+		<result property="question"      column="question"     jdbcType="VARCHAR"/>
+		<result property="userId"        column="user_id"      jdbcType="VARCHAR"/>
+		<result property="picture"       column="picture"      jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+	<insert id="save" parameterType="feedback">
+		insert into t_feedback (id,question,user_id,picture,
+		status,operator, operate_time)
+		values (#{id,jdbcType=VARCHAR},#{question,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},#{picture,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+	    
+    <delete id="deleteById" parameterType="feedback">
+		delete from t_feedback where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="updateById" parameterType="feedback">
+	    update t_feedback
+	    <set> 
+	      <if test="question != null">
+	        question = #{question,jdbcType=VARCHAR},
+	      </if>
+	      <if test="userId != null">
+	        user_id = #{userId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="picture != null">
+	        picture = #{picture,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null">
+	        status = #{status,jdbcType=INTEGER},
+	      </if>
+	      <if test="operator != null">
+	        operator = #{operator,jdbcType=VARCHAR},
+	      </if>
+	      <if test="operateTime != null">
+	        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=VARCHAR}
+    </update>
+  
+	<select id="selectById" parameterType="string" resultMap="feedbackResult">
+        select id,question,user_id,picture,
+		<include refid="superColumn" />
+        from t_feedback
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectByIndex" parameterType="feedback" resultMap="feedbackResult">
+        select id,question,user_id,picture,
+		<include refid="superColumn" />
+        from t_feedback 
+        <where>
+            1=1
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by operate_time desc
+        limit #{offset},#{limit}
+    </select>
+    
+    <select id="selectByIndexCount" parameterType="feedback" resultType="int">
+       select count(1) as count
+        from t_feedback 
+        <where>
+            1=1
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by operate_time desc
+        limit #{offset},#{limit}
+    </select>
+</mapper>

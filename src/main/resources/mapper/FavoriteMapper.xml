@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.FavoriteMapper">
+
+    <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="favoriteResult" type="favorite" extends="superResult">
+	    <result property="userId"            column="user_id"           jdbcType="VARCHAR"/>
+		<result property="targetId"          column="target_id"         jdbcType="VARCHAR"/>
+		<result property="targetType"        column="target_type"       jdbcType="INTEGER"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+    <insert id="save" parameterType="favorite">
+		insert into t_favorite (id,user_id,target_id, target_type,
+		status,operator, operate_time)
+		values (#{id,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{targetId,jdbcType=VARCHAR}, #{targetType,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+    
+    <delete id="deleteById" parameterType="favorite">
+		delete from t_favorite where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=VARCHAR}
+	</delete>
+
+    <select id="selectById" parameterType="string" resultMap="favoriteResult">
+        select id,user_id,target_id, target_type,
+		<include refid="superColumn" />
+        from t_favorite 
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectOne" parameterType="favorite" resultMap="favoriteResult">
+        select id,user_id,target_id, target_type,
+		<include refid="superColumn" />
+        from t_favorite 
+        <where>
+            <if test="id != null">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="targetId != null and targetId != ''">
+              AND target_id = #{targetId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+    
+    
+    <select id="selectByIndex" parameterType="favorite" resultMap="favoriteResult">
+        select id,user_id,target_id, target_type,
+		<include refid="superColumn" />
+        from t_favorite 
+        <where>
+            <if test="id != null">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="targetId != null and targetId != ''">
+              AND target_id = #{targetId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by operate_time asc limit #{offset},#{limit}
+    </select>
+    
+    <select id="selectByIndexCount" parameterType="favorite" resultType="int">
+        select count(1) as count
+        from t_favorite  
+        <where>
+            <if test="id != null">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="targetId != null and targetId != ''">
+              AND target_id = #{targetId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

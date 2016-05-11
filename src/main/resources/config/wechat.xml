@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd" 
+	   default-lazy-init="true">
+	
+	<bean id="wechatConfig" class="java.util.HashMap">
+	  <constructor-arg>
+	   <map>
+	    <entry key="appId" value="${wechat.appid}" />
+	    <entry key="mchId" value="${wechat.mchid}" />
+	    <entry key="apiKey"  value="${wechat.apikey}" />
+	    <entry key="payUrl"  value="${wechat.payurl}" />
+	    <entry key="transferUrl" value="${wechat.transferurl}" />
+	    <entry key="notifyUrl"  value="${wechat.notifyurl}" />
+	    <entry key="messageUrl" value="${wechat.messageurl}" />
+	   </map>
+	  </constructor-arg>
+	 </bean>
+</beans>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.console.BrandMapper">
+
+	<resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR" />
+		<result property="status"      column="status"       jdbcType="INTEGER" />
+		<result property="operator"    column="operator"     jdbcType="VARCHAR" />
+		<result property="operateTime" column="operate_time" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="brandResult" type="brand" extends="superResult">
+		<result property="code"     column="code"    jdbcType="VARCHAR" />
+		<result property="name"    column="name"   jdbcType="VARCHAR" />
+		<result property="categoryCode"    column="category_code"   jdbcType="VARCHAR" />
+		<result property="title"    column="title"   jdbcType="VARCHAR" />
+		<result property="description"  column="description" jdbcType="VARCHAR" />
+		<result property="picture"   column="picture"  jdbcType="VARCHAR" />
+		<result property="cover"    column="cover"   jdbcType="VARCHAR" />
+		<result property="recommendation"  column="recommendation" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="superColumn">
+		status, operator, operate_time
+	</sql>
+
+	<insert id="save" parameterType="brand">
+		insert into t_brand (code,name,category_code,title,description,
+		picture,cover,operate_time, operator)
+		values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{categoryCode,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, 
+		#{description,jdbcType=VARCHAR},#{picture,jdbcType=VARCHAR},#{cover,jdbcType=VARCHAR},
+		now(),#{operator,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteById" parameterType="brand">
+		delete from t_brand where
+		id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<select id="selectById" parameterType="string" resultMap="brandResult">
+		select id,code,name,category_code,title,description, picture,cover,recommendation,
+		<include refid="superColumn" />
+		from t_brand
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectByIndex" parameterType="brand" resultMap="brandResult">
+		select id,code,name,category_code,title,description, picture,cover,recommendation,
+		<include refid="superColumn" />
+		from t_brand
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="code != null and code != ''">
+				AND code = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null and name != ''">
+				AND name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="categoryCode != null and categoryCode != ''">
+				AND category_code = #{categoryCode,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=BIGINT}
+			</if>
+		</where>
+		order by operate_time desc limit #{offset},#{limit}
+	</select>
+
+	<select id="selectByIndexCount" parameterType="brand" resultType="int">
+		select count(1) as count
+		from t_brand
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="code != null and code != ''">
+				AND code = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null and name != ''">
+				AND name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="categoryCode != null and categoryCode != ''">
+				AND category_code = #{categoryCode,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateById" parameterType="brand">
+		update t_brand
+		<set>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="code != null and code != ''">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null and title != ''">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null and description != ''">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="picture != null and picture != ''">
+				picture = #{picture,jdbcType=VARCHAR},
+			</if>
+			<if test="cover != null and cover != ''">
+				cover = #{cover,jdbcType=VARCHAR},
+			</if>
+			<if test="recommendation != null">
+				recommendation = #{recommendation,jdbcType=INTEGER},
+			</if>
+			<if test="operator != null and operator != ''">
+				operator = #{operator,jdbcType=INTEGER},
+			</if>
+			operate_time = now()
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

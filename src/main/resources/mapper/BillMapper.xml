@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.BillMapper">
+
+	<resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR" />
+		<result property="status"      column="status"       jdbcType="INTEGER" />
+		<result property="operator"    column="operator"     jdbcType="VARCHAR" />
+		<result property="operateTime" column="operate_time" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="billResult" type="bill" extends="superResult">
+		<result property="userId"     column="userid"    jdbcType="VARCHAR" />
+		<result property="orderId"    column="orderid"   jdbcType="VARCHAR" />
+		<result property="payInfo"    column="payinfo"   jdbcType="VARCHAR" />
+		<result property="payAmount"  column="payamount" jdbcType="DECIMAL" />
+		<result property="orderFee"   column="orderfee"  jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="superColumn">
+		status, operator, operate_time
+	</sql>
+
+	<insert id="save" parameterType="bill">
+		insert into t_bill (id, userid,orderid,payinfo,orderfee,
+		payamount,operate_time, operator)
+		values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{payInfo,jdbcType=VARCHAR},#{orderFee,jdbcType=DECIMAL},#{payAmount,jdbcType=DECIMAL},
+		now(),#{operator,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteById" parameterType="bill">
+		delete from t_bill where
+		id = #{id,jdbcType=VARCHAR} and userid = #{userId,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="selectByIndex" parameterType="bill" resultMap="billResult">
+		select id,userid, orderid,payinfo,orderfee, payamount,
+		<include refid="superColumn" />
+		from t_bill
+		<where>
+			1=1
+			<if test="id != null and id != ''">
+				AND id = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userid = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				AND orderid = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=BIGINT}
+			</if>
+		</where>
+		order by operate_time desc limit #{offset},#{limit}
+	</select>
+
+	<select id="selectByIndexCount" parameterType="bill" resultType="int">
+		select count(1) as count
+		from t_bill
+		<where>
+			1=1
+			<if test="id != null and id != ''">
+				AND id = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userid = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				AND orderid = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.LocationMapper">
+   <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="locationResult" type="location" extends="superResult">
+	    <result property="countryId"      column="country_id"     jdbcType="VARCHAR"/>
+		<result property="code"           column="code"           jdbcType="VARCHAR"/>
+		<result property="name"           column="name"           jdbcType="VARCHAR"/>
+		<result property="title"          column="title"          jdbcType="VARCHAR"/>
+		<result property="coordinate"     column="coordinate"     jdbcType="VARCHAR"/>
+		<result property="phoneCode"      column="phone_code"     jdbcType="VARCHAR"/>
+		<result property="cover"          column="cover"          jdbcType="VARCHAR"/>
+		<result property="picture"        column="picture"        jdbcType="VARCHAR"/>
+		<result property="description"    column="description"    jdbcType="VARCHAR"/>
+		<result property="recommendation" column="recommendation" jdbcType="INTEGER"/>
+		<result property="buyerCount"     column="buyer_count"    jdbcType="INTEGER"/>
+		<result property="serviceCount"   column="service_count"  jdbcType="INTEGER"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+	<insert id="save" parameterType="location">
+		insert into t_location (id,country_id,code, name,title,coordinate,phone_code,cover,picture,description,recommendation,buyer_count,service_count,
+		status,operator, operate_time)
+		values (#{id,jdbcType=VARCHAR},#{countryId,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},#{coordinate,jdbcType=VARCHAR},#{phoneCode,jdbcType=VARCHAR},
+		#{cover,jdbcType=VARCHAR},#{picture,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{recommendation,jdbcType=INTEGER},#{buyerCount,jdbcType=INTEGER},#{serviceCount,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+	    
+    <delete id="deleteById" parameterType="location">
+		delete from t_location where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="updateById" parameterType="location">
+	    update t_location
+	    <set>
+	      <if test="countryId != null">
+	        countryId = #{countryId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="code != null">
+	        code = #{code,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null">
+	        name = #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="title != null">
+	        title = #{title,jdbcType=VARCHAR},
+	      </if>
+	      <if test="coordinate != null">
+	        coordinate = #{coordinate,jdbcType=VARCHAR},
+	      </if>
+	      <if test="phoneCode != null">
+	        phone_code = #{phoneCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="cover != null">
+	        cover = #{cover,jdbcType=VARCHAR},
+	      </if>
+	      <if test="picture != null">
+	        picture = #{picture,jdbcType=VARCHAR},
+	      </if>
+	      <if test="description != null">
+	        description = #{description,jdbcType=VARCHAR},
+	      </if>
+	      <if test="recommendation != null">
+	        recommendation = #{recommendation,jdbcType=INTEGER},
+	      </if>
+	      <if test="buyerCount != null">
+	        buyer_count = #{buyerCount,jdbcType=INTEGER},
+	      </if>
+	      <if test="serviceCount != null">
+	        service_count = #{serviceCount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="status != null">
+	        status = #{status,jdbcType=INTEGER},
+	      </if>
+	      <if test="operator != null">
+	        operator = #{operator,jdbcType=VARCHAR},
+	      </if>
+	      <if test="operateTime != null">
+	        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=VARCHAR}
+    </update>
+  
+	<select id="selectById" parameterType="string" resultMap="locationResult">
+        select id,country_id,code, name,title,coordinate,phone_code,cover,picture,description,recommendation,
+        buyer_count,service_count,
+		<include refid="superColumn" />
+        from t_location
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectByIndex" parameterType="location" resultMap="locationResult">
+        select id,country_id,code, name,title,coordinate,phone_code,cover,picture,description,recommendation,
+        buyer_count,service_count,
+		<include refid="superColumn" />
+        from t_location 
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="countryId != null and countryId != ''">
+              AND country_id = #{countryId,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null and code != ''">
+              AND code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null and name != ''">
+              AND name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneCode != null and phoneCode != ''">
+              AND phone_code = #{phoneCode,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="recommendation != null">
+              AND recommendation = #{recommendation,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by recommendation desc
+        limit #{offset},#{limit}
+    </select>
+</mapper>

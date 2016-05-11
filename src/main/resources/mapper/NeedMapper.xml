@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.NeedMapper">
+
+    <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="needResult" type="need" extends="superResult">	
+		<result property="title"             column="title"            jdbcType="VARCHAR"/>
+		<result property="userId"            column="user_id"          jdbcType="VARCHAR"/>
+		<result property="country"           column="country"          jdbcType="VARCHAR"/>
+		<result property="description"       column="description"      jdbcType="VARCHAR"/>
+		<result property="servicerequire"    column="servicerequire"   jdbcType="VARCHAR"/>
+		<result property="price"             column="price"            jdbcType="DECIMAL"/>
+		<result property="count"             column="count"            jdbcType="INTEGER"/>
+		<result property="cover"             column="cover"            jdbcType="VARCHAR"/>
+		<result property="picture"           column="picture"          jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="needAcpResult" type="needAccept" extends="superResult">	
+		<result property="acpUser"          column="acp_user"        jdbcType="VARCHAR"/>
+		<result property="needUser"         column="need_user"       jdbcType="VARCHAR"/>
+		<result property="needId"           column="need_id"         jdbcType="VARCHAR"/>
+		<result property="picture"       	column="picture"         jdbcType="VARCHAR"/>
+		<result property="description"    	column="description"     jdbcType="VARCHAR"/>
+		<result property="originprice"      column="originprice"     jdbcType="DECIMAL"/>
+		<result property="postprice"        column="postprice"       jdbcType="DECIMAL"/>
+		<result property="serviceprice"     column="serviceprice"    jdbcType="DECIMAL"/>
+		<result property="addprice"         column="addprice"        jdbcType="DECIMAL"/>
+		<result property="price"            column="price"           jdbcType="DECIMAL"/>
+		<result property="time"             column="time"            jdbcType="VARCHAR"/>
+	</resultMap>
+	
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+    <insert id="save" parameterType="need">
+		insert into t_need (id,title,user_id,country,picture, description,servicerequire,price,count,cover,status,operator,operate_time)
+		values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR},#{picture,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},
+		#{servicerequire,jdbcType=VARCHAR},#{price,jdbcType=DECIMAL},#{count,jdbcType=INTEGER},
+		#{cover,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+    
+    <insert id="saveAcp" parameterType="needAccept">
+		insert into t_need_accept (id,acp_user,need_user,need_id,picture,description,originprice,postprice,serviceprice,addprice,price,time,status,operator,operate_time)
+		values (#{id,jdbcType=VARCHAR},#{acpUser,jdbcType=VARCHAR},#{needUser,jdbcType=VARCHAR},#{needId,jdbcType=VARCHAR},#{picture,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},#{originprice,jdbcType=DECIMAL},#{postprice,jdbcType=DECIMAL},#{serviceprice,jdbcType=DECIMAL},#{addprice,jdbcType=DECIMAL},#{price,jdbcType=DECIMAL},#{time,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+    
+    <delete id="deleteById" parameterType="string">
+		delete from t_need where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<update id="updateById" parameterType="need">
+    update t_need
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="servicerequire != null">
+        servicerequire = #{servicerequire,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  	<select id="selectById" parameterType="string" resultMap="needResult">
+        select id,user_id,title,country,picture, description,servicerequire,price,count,cover,
+		<include refid="superColumn" />
+        from t_need 
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+ 
+	<select id="selectByIndex" parameterType="need" resultMap="needResult">
+        select id,user_id,title,country,picture, description,servicerequire,price,count,cover,
+	   <include refid="superColumn" />
+        from t_need 
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+              AND country = #{country,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by operate_time desc limit #{offset},#{limit}
+    </select>
+    
+    <select id="selectByIndexCount" parameterType="need" resultType="int">
+        select count(1) as count
+        from t_need 
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+              AND country = #{country,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectAcpListByNeedId" parameterType="string" resultMap="needAcpResult">
+        select id,acp_user,need_user,need_id,picture,description,originprice,postprice,serviceprice,addprice,price,time,
+		<include refid="superColumn" />
+        from t_need_accept 
+        where need_id = #{needId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectOne" parameterType="need" resultMap="needResult">
+      select id,user_id,title,country,picture, description,servicerequire,price,count,cover,
+	   <include refid="superColumn" />
+        from t_need 
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+              AND country = #{country,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+    
+    <select id="selectAcpByAcpId" parameterType="needAccept" resultMap="needAcpResult">
+        select id,acp_user,need_user,need_id,picture,description,originprice,postprice,serviceprice,addprice,time,
+		<include refid="superColumn" />
+        from t_need_accept 
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="needId != null and needId != ''">
+              AND need_id = #{needId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+    
+    <update id="updateAcpList" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        	update t_need_accept
+        	<set>
+                  status = ${item.status},operator = #{item.needUser},operate_time=now()
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+</mapper>

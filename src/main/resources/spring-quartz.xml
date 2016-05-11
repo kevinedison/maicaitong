@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="seviceStaticTask" class="com.portal.task.SeviceStaticTask" />
+	<bean id="serviceStaticJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="seviceStaticTask" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="serviceStaticTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serviceStaticJobDetail"></property>
+		<property name="startDelay" value="2000"></property><!-- 启动后2s启动 -->
+		<property name="repeatInterval" value="60000" /><!-- 间隔60秒检查是否刷新缓存 -->
+	</bean>
+
+	<bean id="messageStaticTask" class="com.portal.task.MessageStaticTask" />
+	<bean id="messageStaticJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="messageStaticTask" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="messageStaticTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="messageStaticJobDetail"></property>
+		<property name="startDelay" value="2000"></property><!-- 启动后2s启动 -->
+		<property name="repeatInterval" value="1800000" /><!-- 间隔30分检查是否刷新缓存 -->
+	</bean>
+
+	<bean id="serviceOrderStaticTask" class="com.portal.task.ServiceOrderStaticTask" />
+	<bean id="serviceOrderStaticJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="serviceOrderStaticTask" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="serviceOrderStaticTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="serviceOrderStaticJobDetail"></property>
+		<property name="startDelay" value="2000"></property><!-- 启动后2s启动 -->
+		<property name="repeatInterval" value="500000000000" /><!-- 间隔30分检查是否刷新缓存 -->
+	</bean>
+	
+	<bean id="pageViewTask" class="com.portal.task.PageViewTask" />
+	<bean id="pageViewJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="pageViewTask"/>
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="pageViewTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="pageViewJobDetail" />
+		<property name="startDelay" value="2000" /><!-- 启动后2s启动 -->
+		<property name="repeatInterval" value="120000" /><!-- 间隔2分执行日志记录 -->
+	</bean>
+	
+	<bean id="staticPageViewTask" class="com.portal.task.StaticPageViewTask" />
+	<bean id="staticPageViewJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="staticPageViewTask" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="staticPageViewTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="staticPageViewJobDetail" />
+		<property name="startDelay" value="2000" /> <!-- 启动后2s启动 -->
+		<property name="repeatInterval" value="120000" /><!-- 间隔2分执行日志记录 -->
+	</bean> 
+	
+	<bean id="delOverDueNeedOrderTask" class="com.portal.task.DelOverDueNeedOrderTask" />
+	<bean id="delOverDueNeedOrderJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="delOverDueNeedOrderTask" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="delOverDueNeedOrderTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="delOverDueNeedOrderJobDetail" />
+		<property name="startDelay" value="2000" />
+		<property name="repeatInterval" value="900000" />
+	</bean>
+
+	<bean id="SpringJobSchedulerFactoryBean" lazy-init="false"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+
+		<property name="schedulerContextAsMap">
+			<map>
+				<!-- spring 管理的service需要放到这里，才能够注入成功 -->
+				<description>schedulerContextAsMap</description>
+				<entry key="taskMapper" value-ref="taskMapper" />
+			</map>
+		</property>
+		<property name="applicationContextSchedulerContextKey">
+			<value>applicationContext</value>
+		</property>
+
+		<property name="triggers">
+			<list>
+				<ref bean="serviceStaticTrigger" />
+				<ref bean="messageStaticTrigger" />
+				<ref bean="serviceOrderStaticTrigger" />
+				<ref bean="pageViewTrigger" />
+				<ref bean="staticPageViewTrigger" />
+				<ref bean="delOverDueNeedOrderTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

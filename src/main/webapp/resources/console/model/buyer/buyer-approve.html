@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<div class="edit-list-content" style="display:none">
+   
+</div>
+
+<div class="content-info" style="display:none">
+   <nav>
+	  <ul class="pager">
+	    <li class="back pull-left"><a href="javascript:;"><span aria-hidden="true">&larr;</span> 返回</a></li>
+	  </ul>
+	</nav>
+   <table class="table" >
+	    <thead>
+	       <tr>
+	         <th width="200px">属性</th>
+	         <th>属性值</th>
+	       </tr>
+	    </thead>	
+	    <tbody class="content-detail-info" style="min-height:450px;"></tbody>
+	</table>
+</div>
+
+<table class="table table-hover content-list">
+     <thead>
+       <tr>
+         <td colspan="999"></td>
+       </tr>
+     </thead> 
+     <thead>
+       <tr>
+         <th width="80px">头像</th>
+         <th width="120px">真实姓名</th>
+         <th width="120px">所在城市</th>
+         <th width="120px">身份</th>
+         <th width="160px">证件</th>
+         <th width="180px">证件图片</th>
+         <th>推荐人</th>
+         <th width="220px">操作</th>
+       </tr>
+     </thead>
+     <tbody class="content-wrap" style="min-height:450px;"></tbody>
+     <thead>
+       <tr>
+         <td colspan="999">
+			<nav>
+			  <ul class="pager" page="0">
+			    <li><button class="pre btn btn-primary">上一页</button></li>
+			    <li><button class="next btn btn-primary">下一页</button></li>
+			  </ul>
+			</nav>
+         </td>
+       </tr>
+     </thead>
+</table>
+</body>
+<script>
+
+var loadAndRender = function(page,condition) {
+	condition = condition || {};
+	condition.page = page;
+	condition.pageSize = daidian.config.pageSize;
+	condition.auth=2;
+	$.getJSON("/console/user/list", condition, function(data){
+		if(data && data.code == '000000') {
+            if(!data.data || !data.data.count || data.data.count == 0) {
+                $('.content-wrap').append('<tr><td colspan="999" class="text-center">没有数据</td></tr>');
+                return;
+            }
+
+            if((page * daidian.config.pageSize) < data.data.count) {
+                $(".content-list  .pager .next").attr('disabled',false);
+            } else {
+            	$(".content-list  .pager .next").attr('disabled',true);
+            }
+            var contents = data.data.data || [];
+            contents.forEach(function(curData) {
+            	var html = [];
+            	html.push('<tr>');
+            	html.push('   <td ><img src="'+getPictureUrl(curData.avatar,2)+'" style="height:44px;width:44px;" class="img-circle"></td>');
+            	html.push('   <td>'+curData.realName+'</td>');
+            	html.push('   <td>'+(dataconfig.countrys[curData.country] || {}).name+'</td>');
+            	html.push('   <td>'+(daidian.config.identityType[curData.identity] || curData.identity)+'</td>');
+            	html.push('   <td>'+curData.certificateNo+'</td>');
+            	html.push('   <td><img src="'+getPictureUrl(curData.certificate,5)+'" style="height:100px;width:100px;" class="img-rounded"></td>');
+            	html.push('   <td>'+(curData.inviteId || '')+'</td>');
+            	html.push('   <td class="list-row-operate">');
+            	html.push('   	<button type="button" class="btn btn-danger approve">审批</button>');
+            	html.push('   	<button type="button" class="btn btn-info info">查看详情</button>');
+            	html.push('   </td>');
+            	html.push('</tr>');
+            	$(html.join(' ')).data('data', curData).appendTo('.content-wrap');
+            });
+            $('.list-row-operate .delete').popover();
+        } else {
+        	
+        }
+	});
+};
+
+var renderEditForm = function(content) {
+	if(content) {
+    	
+    } 
+};
+
+var renderInfoTable = function(content) {
+	var html = [];    
+	html.push('<tr><th>申请时间</th><td>'+new Date(content.operateTime).format('yyyy-MM-dd')+'</td></tr>');
+	html.push('<tr><th>头像</th><td><img src="'+getPictureUrl(content.avatar,2)+'" style="height:44px;width:44px;" class="img-circle"></td></tr>');
+	html.push('<tr><th>真实姓名</th><td>'+content.realName+'</td></tr>');
+	html.push('<tr><th>所在城市</th><td>'+(dataconfig.countrys[content.country] || {}).name+'</td></tr>');
+	html.push('<tr><th>身份</th><td>'+(daidian.config.identityType[content.identity] || content.identity)+'</td></tr>');
+	html.push('<tr><th>证件</th><td>'+content.certificateNo+'</td></tr>');
+	html.push('<tr><th>证件图片</th><td><img src="'+getPictureUrl(content.certificate,5)+'" style="height:480px;width:480px;" class="img-rounded"></td></tr>');
+	html.push('<tr><th>推荐人</th><td>'+(content.inviteId || '')+'</td></tr>');
+	html.push('<tr><th>个人描述</th><td>'+(content.introduce || '')+'</td></tr>');
+	$('.content-detail-info').html(html.join(''));
+};
+
+var emptyEditForm = function() {
+ 	
+};
+
+var initPage = function() {
+	
+}
+
+
+$(document).ready(function(){
+	initPage();
+	
+	$('.add-list-content-btn').click(function(evt) {
+	   jQuery('.content-list').delay(350).fadeOut(function(){
+		  $('.save-submit').attr('action','add');
+		  emptyEditForm();
+	      jQuery('.edit-list-content').delay(350).fadeIn(350);
+	   });
+	});
+	
+	$('.edit-list-content .back,.content-info .back').click(function(evt){
+		jQuery('.content-info,.edit-list-content').delay(350).fadeOut(function(){
+	      jQuery('.content-list').delay(350).fadeIn(350);
+	    });
+	});
+	
+	$('.save-submit').click(function(evt){
+		
+	});
+	
+	
+	$('body').on('click','.list-row-operate button', function (evt) {
+		var target = $(evt.target);
+	    if(target.is('button')) {
+	    	var data = target.closest('tr').data("data");
+	    	console.log(data.id);
+	    	if(!data) {return;}
+	    	
+	    	if(target.hasClass("edit")) {
+	    		
+	    	} else if(target.hasClass("delete")) {
+	    		
+	    	} else if(target.hasClass("info")) {			
+	    		jQuery('.content-list').delay(350).fadeOut(function(){
+	    		    jQuery('.content-info').delay(350).fadeIn(350,renderInfoTable(data));
+	    		});
+	    	} else if(target.hasClass("approve")) {
+	    		var option = {};
+	    		option.title = '审批确认';
+	    		var contentHtml = [];
+	    		contentHtml.push('<form class="form-horizontal">');
+	    		contentHtml.push('  <div class="form-group">');
+	    		contentHtml.push('    <label class="col-sm-2 control-label">审批意见</label>');
+	    		contentHtml.push('    <div class="col-sm-10"><textarea class="form-control" name="approve-remark" rows="3">审批通过</textarea></div>');
+	    		contentHtml.push('  </div>');
+	    		contentHtml.push('  <div class="form-group">');
+	    		contentHtml.push('    <label class="col-sm-2 control-label">审批结果</label>');
+	    		contentHtml.push('    <div class="col-sm-10">');
+	    		contentHtml.push('	    <label class="radio-inline"><input type="radio" name="approve-result" value="1" checked> 通过 </label>');
+	    		contentHtml.push('		<label class="radio-inline"><input type="radio" name="approve-result" value="3"> 不通过</label>');
+	    		contentHtml.push('    </div>');
+	    		contentHtml.push('  </div>');
+	    		contentHtml.push('</form>');
+	    	
+	    		option.content = contentHtml.join(' ');
+	    		option.yesBind = function() {
+	    			var update = {};
+	    			update.id = data.userId;
+	    			update.status = $('input[name=approve-result]:checked').val();
+	    			update.remark = $('textarea[name=approve-remark]').val();
+	    			$.ajax({
+	    		        type : "put",
+	    		        data : JSON.stringify(update),
+	    		        contentType : "application/json;charset=UTF-8",
+	    		        url  : '/console/buyer/approve?rmd='+new Date().getTime(),
+	    		        success     : function(data){
+	    		            if(data.code == '000000') {
+	    		            	target.closest('tr').slideUp(200);
+	    		            } else {
+	    		                
+	    		            }
+	    		        },
+	    		        error     : function() {
+	    		        }
+	    		    });
+	    			return true;
+	    		};	
+	    		confirmDialog(option);
+	    	}
+	    }
+    });
+	
+	$('.content-list .pager button').click(function(evt) {
+		var target = $(evt.target);
+		var page = $(".content-list .pager").attr('page') || 0; 
+		if(target.hasClass('pre')) {
+			page--;
+		} else if(target.hasClass('next')){
+			page++;
+		}
+		if(page < 1) {page = 1;}
+	        	
+		if(page == 1) {
+			$(".content-list .pager .pre").attr('disabled',true);
+	    } else {
+	    	$(".content-list .pager .pre").attr('disabled',false);
+	    } 
+		
+		$(".content-list .pager").attr('page',page);
+		$('.content-wrap').html('');
+		loadAndRender(page);
+	});	
+	$('.content-list .pager .next').trigger('click');
+});
+</script>
+</html>

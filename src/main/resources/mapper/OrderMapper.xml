@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.OrderMapper">
+
+	<resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR" />
+		<result property="status"      column="status"       jdbcType="INTEGER" />
+		<result property="operator"    column="operator"     jdbcType="VARCHAR" />
+		<result property="operateTime" column="operate_time" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="orderResult" type="order" extends="superResult">
+		<result property="serviceId"      column="serviceid"        jdbcType="VARCHAR" />
+		<result property="buyerId"        column="buyerid"          jdbcType="VARCHAR" />
+		<result property="saleId"         column="saleid"           jdbcType="VARCHAR" />
+		<result property="serviceContent" column="servicecontent"   jdbcType="VARCHAR" />
+		<result property="price"          column="price"            jdbcType="DECIMAL" />
+		<result property="count"          column="count"            jdbcType="INTEGER" />
+		<result property="totalPrice"     column="totalprice"       jdbcType="DECIMAL" />
+		<result property="buyerInfo"      column="buyerinfo"        jdbcType="VARCHAR" />
+		<result property="isComment"      column="iscomment"        jdbcType="INTEGER" />
+		<result property="payType" 		  column="paytype"    		jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="payResult" type="com.portal.wechat.bean.WechatPayNotifyResult"
+		extends="superResult">
+		<result property="out_trade_no"   column="out_trade_no"   jdbcType="VARCHAR" />
+		<result property="attach"         column="attach"         jdbcType="VARCHAR" />
+		<result property="transaction_id" column="transaction_id" jdbcType="VARCHAR" />
+		<result property="trade_type"     column="trade_type"   jdbcType="VARCHAR" />
+		<result property="total_fee"      column="total_fee"    jdbcType="INTEGER" />
+		<result property="time_end"       column="time_end"     jdbcType="VARCHAR" />
+		<result property="openid"         column="openid"       jdbcType="VARCHAR" />
+		<result property="fee_type"       column="fee_type"     jdbcType="VARCHAR" />
+		<result property="device_info"    column="device_info"  jdbcType="VARCHAR" />
+		<result property="cash_fee"       column="cash_fee"     jdbcType="INTEGER" />
+		<result property="bank_type"      column="bank_type"    jdbcType="VARCHAR" />
+		<result property="result_code"    column="result_code"  jdbcType="VARCHAR" />
+		<result property="err_code"       column="err_code"     jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="superColumn">
+		status, operator, operate_time
+	</sql>
+
+	<insert id="save" parameterType="order">
+		insert into t_order (id, serviceid, buyerid, saleid,
+		servicecontent, price, count,
+		totalprice, buyerinfo,
+		operate_time,
+		status, operator)
+		values (#{id,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR},
+		#{buyerId,jdbcType=VARCHAR}, #{saleId,jdbcType=VARCHAR},
+		#{serviceContent,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+		#{count,jdbcType=INTEGER},
+		#{totalPrice,jdbcType=DECIMAL}, #{buyerInfo,jdbcType=VARCHAR},
+		now(),
+		#{status,jdbcType=TINYINT}, #{operator,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteById" parameterType="order">
+		delete from t_order where id = #{id,jdbcType=VARCHAR} and buyerid = #{buyerId,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="selectById" parameterType="string" resultMap="orderResult">
+		select id,serviceid, buyerid, saleid,
+		servicecontent, price, count,
+		totalprice, buyerinfo,iscomment,paytype,
+		<include refid="superColumn" />
+		from t_order
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectOne" parameterType="order" resultMap="orderResult">
+		select id,serviceid, buyerid, saleid,
+		servicecontent, price, count,
+		totalprice, buyerinfo,iscomment,paytype,
+		<include refid="superColumn" />
+		from t_order
+		<where>
+			1=1
+			<if test="id != null and id != ''">
+				AND id = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="serviceId != null and serviceId != ''">
+				AND serviceid = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="buyerId != null and buyerId != ''">
+				AND buyerid = #{buyerId,jdbcType=VARCHAR}
+			</if>
+			<if test="saleId != null and saleId != ''">
+				AND saleid = #{saleId,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="isComment != null">
+				AND iscomment = #{isComment,jdbcType=INTEGER}
+			</if>
+			<if test="statusArr != null">
+				AND status in
+				<foreach collection="statusArr" index="index" item="item"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		limit 1
+	</select>
+
+	<select id="selectByIndex" parameterType="order" resultMap="orderResult">
+		select id,serviceid, buyerid, saleid,
+		servicecontent, price, count,
+		totalprice, buyerinfo,iscomment,paytype,
+		<include refid="superColumn" />
+		from t_order
+		<where>
+			1=1
+			<if test="id != null and id != ''">
+				AND id = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="serviceId != null and serviceId != ''">
+				AND serviceid = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="buyerId != null and buyerId != ''">
+				AND buyerid = #{buyerId,jdbcType=VARCHAR}
+			</if>
+			<if test="saleId != null and saleId != ''">
+				AND saleid = #{saleId,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=BIGINT}
+			</if>
+			<if test="isComment != null">
+				AND iscomment = #{isComment,jdbcType=INTEGER}
+			</if>
+			<if test="statusArr != null">
+				AND status in
+				<foreach collection="statusArr" index="index" item="item"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="payType != null">
+				AND paytype = #{payType,jdbcType=INTEGER}
+			</if>
+		</where>
+		order by operate_time desc limit #{offset},#{limit}
+	</select>
+
+	<select id="selectByIndexCount" parameterType="order"
+		resultType="int">
+		select count(1) as count
+		from t_order
+		<where>
+			1=1
+			<if test="id != null and id != ''">
+				AND id = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="serviceId != null and serviceId != ''">
+				AND serviceid = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="buyerId != null and buyerId != ''">
+				AND buyerid = #{buyerId,jdbcType=VARCHAR}
+			</if>
+			<if test="saleId != null and saleId != ''">
+				AND saleid = #{saleId,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=BIGINT}
+			</if>
+			<if test="isComment != null">
+				AND iscomment = #{isComment,jdbcType=INTEGER}
+			</if>
+			<if test="statusArr != null">
+				AND status in
+				<foreach collection="statusArr" index="index" item="item"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="payType != null">
+				AND paytype = #{payType,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateById" parameterType="order">
+		update t_order
+		<set>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="buyerInfo != null and buyerInfo != ''">
+				buyerinfo = #{buyerInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="isComment != null">
+				iscomment = #{isComment,jdbcType=INTEGER},
+			</if>
+			<if test="payType != null">
+				paytype = #{payType,jdbcType=INTEGER}
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectOrderCount" parameterType="order" resultMap="orderResult">
+		select status,count(1) count from t_order
+		<where>
+			1=1
+			<if test="buyerId != null and buyerId != ''">
+				AND buyerid = #{buyerId,jdbcType=VARCHAR}
+			</if>
+			<if test="saleId != null and saleId != ''">
+				AND saleid = #{saleId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		group by status
+	</select>
+
+	<!--update id="updateById" parameterType="order" > update t_order <set > 
+		<if test="passengerName != null and passengerName != ''" > passenger_name 
+		= #{passengerName,jdbcType=VARCHAR}, </if> <if test="passengerWechat != null 
+		and passengerWechat != ''" > passenger_wechat = #{passengerWechat,jdbcType=VARCHAR}, 
+		</if> <if test="internalPhone != null and internalPhone != ''" > internal_phone 
+		= #{internalPhone,jdbcType=VARCHAR}, </if> <if test="localPhone != null and 
+		localPhone != ''" > local_phone = #{localPhone,jdbcType=VARCHAR}, </if> <if 
+		test="idCard != null and idCard != ''" > id_card = #{idCard,jdbcType=VARCHAR}, 
+		</if> <if test="passport != null and passport != ''" > passport = #{passport,jdbcType=VARCHAR}, 
+		</if> <if test="urgentContactName != null and urgentContactName != ''" > 
+		urgent_contact_name = #{urgentContactName,jdbcType=VARCHAR}, </if> <if test="urgentContactPhone 
+		!= null and urgentContactPhone != ''" > urgent_contact_phone = #{urgentContactPhone,jdbcType=VARCHAR}, 
+		</if> <if test="meetPlace != null and meetPlace != ''" > meet_place = #{meetPlace,jdbcType=VARCHAR}, 
+		</if> <if test="meetTime != null and meetTime != ''" > meet_time = #{meetTime,jdbcType=VARCHAR}, 
+		</if> <if test="destination != null and destination != ''" > destination 
+		= #{destination,jdbcType=VARCHAR}, </if> <if test="luggage != null and luggage 
+		!= ''" > luggage = #{luggage,jdbcType=VARCHAR}, </if> <if test="comments 
+		!= null and comments != ''" > comments = #{comments,jdbcType=VARCHAR}, </if> 
+		<if test="payType != null and payType != ''" > paytype = #{payType,jdbcType=VARCHAR}, 
+		</if> <if test="status != null" > status = #{status,jdbcType=INTEGER}, </if> 
+		</set> where id = #{id,jdbcType=VARCHAR} </update -->
+
+
+	<insert id="savePayInfo" parameterType="com.portal.wechat.bean.WechatPayNotifyResult">
+		insert into t_wechat_payresult (out_trade_no, attach, transaction_id,
+		trade_type,
+		total_fee, time_end, openid,
+		fee_type, device_info, cash_fee,
+		bank_type, result_code, err_code,
+		operate_time,
+		status, operator)
+		values (#{out_trade_no,jdbcType=VARCHAR}, #{attach,jdbcType=VARCHAR},
+		#{transaction_id,jdbcType=VARCHAR}, #{trade_type,jdbcType=VARCHAR},
+		#{total_fee,jdbcType=INTEGER}, #{time_end,jdbcType=VARCHAR},
+		#{openid,jdbcType=VARCHAR},
+		#{fee_type,jdbcType=VARCHAR}, #{device_info,jdbcType=VARCHAR}, #{cash_fee,jdbcType=INTEGER},
+		#{bank_type,jdbcType=VARCHAR}, #{result_code,jdbcType=VARCHAR},
+		#{err_code,jdbcType=VARCHAR},
+		#{operateTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=TINYINT}, #{operator,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="selectPayResult" parameterType="com.portal.wechat.bean.WechatPayNotifyResult"
+		resultMap="payResult">
+		select out_trade_no, attach, transaction_id, trade_type,
+		total_fee, time_end, openid,
+		fee_type, device_info, cash_fee,
+		bank_type, result_code, err_code,
+		<include refid="superColumn" />
+		from t_wechat_payresult
+		<where>
+			1=1
+			<if test="out_trade_no != null and out_trade_no != ''">
+				AND out_trade_no = #{out_trade_no,jdbcType=VARCHAR}
+			</if>
+			<if test="openid != null and openid != ''">
+				AND openid = #{openid,jdbcType=VARCHAR}
+			</if>
+		</where>
+		limit 1
+	</select>
+
+	<insert id="saveRefundInfo" parameterType="com.portal.wechat.bean.WechatPayRefundInfo">
+		insert into t_payrefund_apply (id,out_trade_no,
+		transaction_id,total_fee,refund_fee,
+		operate_time,
+		status, operator)
+		values (#{id,jdbcType=VARCHAR}, #{out_trade_no,jdbcType=VARCHAR},
+		#{transaction_id,jdbcType=VARCHAR},
+		#{total_fee,jdbcType=INTEGER}, #{refund_fee,jdbcType=INTEGER},
+		#{operateTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=TINYINT},#{operator,jdbcType=VARCHAR})
+	</insert>
+</mapper>

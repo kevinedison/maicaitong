@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.console.CategoryMapper">
+
+	<resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR" />
+		<result property="status"      column="status"       jdbcType="INTEGER" />
+		<result property="operator"    column="operator"     jdbcType="VARCHAR" />
+		<result property="operateTime" column="operate_time" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="categoryResult" type="category" extends="superResult">
+		<result property="code"     column="code"    jdbcType="VARCHAR" />
+		<result property="name"     column="name"    jdbcType="VARCHAR" />
+		<result property="brand"    column="brand"   jdbcType="VARCHAR" />
+		<result property="subType"  column="subtype" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="superColumn">
+		status, operator, operate_time
+	</sql>
+
+	<insert id="save" parameterType="category">
+		insert into t_category (code,name,brand,subtype,operate_time, operator)
+		values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{brand,jdbcType=VARCHAR}, 
+		#{subType,jdbcType=VARCHAR},now(),#{operator,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteById" parameterType="category">
+		delete from t_category where
+		id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<select id="selectByIndex" parameterType="category" resultMap="categoryResult">
+		select id,code, name,brand,subtype,
+		<include refid="superColumn" />
+		from t_category
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="code != null and code != ''">
+				AND code = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null and name != ''">
+				AND name = #{name,jdbcType=VARCHAR}
+			</if>
+		</where>
+		order by operate_time asc limit #{offset},#{limit}
+	</select>
+
+	<select id="selectByIndexCount" parameterType="category" resultType="int">
+		select count(1) as count
+		from t_category
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="code != null and code != ''">
+				AND code = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null and name != ''">
+				AND name = #{name,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByCode" parameterType="string" resultMap="categoryResult">
+		select id,code,name,brand,subtype,
+		<include refid="superColumn" />
+		from t_category
+		where code = #{code,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectById" parameterType="string" resultMap="categoryResult">
+		select id,code,name,brand,subtype,
+		<include refid="superColumn" />
+		from t_category
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<update id="updateById" parameterType="category">
+		update t_category
+		<set>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="code != null and code != ''">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="brand != null and brand != ''">
+				brand = #{brand,jdbcType=VARCHAR},
+			</if>
+			<if test="subType != null and subType != ''">
+				subtype = #{subType,jdbcType=VARCHAR},
+			</if>
+			<if test="operator != null and operator != ''">
+				operator = #{operator,jdbcType=INTEGER},
+			</if>
+			operate_time = now()
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

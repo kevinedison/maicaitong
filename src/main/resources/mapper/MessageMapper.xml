@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.MessageMapper">
+
+    <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="messageResult" type="message" extends="superResult">
+	    <result property="relationId"    column="relation_id"    jdbcType="VARCHAR"/>
+	    <result property="message"       column="message"        jdbcType="VARCHAR"/>
+	    <result property="location"      column="location"       jdbcType="VARCHAR"/>
+	    <result property="senderId"      column="sender_id"      jdbcType="VARCHAR"/>
+	    <result property="receiverId"    column="receiver_id"    jdbcType="VARCHAR"/>
+	    <result property="readStatus"    column="read_status"    jdbcType="INTEGER"/> 
+	    <result property="messageTime"    column="message_time"    jdbcType="TIMESTAMP"/>	
+	    <result property="messageType"    column="message_type"    jdbcType="VARCHAR"/>    
+	</resultMap>
+	
+	<resultMap id="messageTitleResult" type="messageRelation">
+	    <result property="id"            column="id"             jdbcType="VARCHAR"/>
+	    <result property="userId"        column="user_id"        jdbcType="VARCHAR"/>
+	    <result property="contactUserId" column="contact_user_id"     jdbcType="VARCHAR"/>
+	    <result property="recentMessage" column="recent_message"      jdbcType="VARCHAR"/>
+	    <result property="updateTime"    column="update_time"    jdbcType="TIMESTAMP"/>
+	    <result property="isContact"     column="is_contact" 	 jdbcType="INTEGER"/>
+	    <result property="unread"     	 column="unread" 	     jdbcType="VARCHAR"/>
+	    <result property="messageType"	 column="message_type"   jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="messageTimeResult" type="messageRelation">
+	    <result property="updateTime"    column="update_time"    jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+    <insert id="save" parameterType="message">
+		insert into t_message (id,relation_id,message,location, sender_id,receiver_id, read_status,
+		status,operator, operate_time,message_time,message_type)
+		values (#{id,jdbcType=VARCHAR},#{relationId,jdbcType=VARCHAR},#{message,jdbcType=VARCHAR},#{location,jdbcType=VARCHAR}, #{senderId,jdbcType=VARCHAR},
+		#{receiverId,jdbcType=VARCHAR},#{readStatus,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP},#{messageTime,jdbcType=TIMESTAMP},#{messageType,jdbcType=VARCHAR});
+    </insert>
+       
+	<update id="updateById" parameterType="message">
+		update t_message
+		<set>	
+			<if test="readStatus != null">
+				read_status = #{readStatus,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="seletctRelation" parameterType="messageRelation" resultMap="messageTitleResult">
+        select id,user_id,contact_user_id,recent_message,update_time,is_contact,unread,message_type 
+        from t_message_relation
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND (user_id = #{userId,jdbcType=VARCHAR} or contact_user_id = #{userId,jdbcType=VARCHAR})
+            </if>
+            <if test="contactUserId != null and contactUserId != ''">
+              AND (user_id = #{contactUserId,jdbcType=VARCHAR} or contact_user_id = #{contactUserId,jdbcType=VARCHAR})
+            </if>
+            <if test="isContact != null">
+              AND (is_contact = #{isContact,jdbcType=INTEGER})
+            </if>
+            <if test="isContact == null">
+              AND (recent_message is not null)
+            </if>
+        </where>
+        order by update_time desc limit #{offset},#{limit}
+    </select>
+    
+    <select id="seletctSaveRelation" parameterType="messageRelation" resultMap="messageTitleResult">
+        select id,user_id,contact_user_id,recent_message,update_time,is_contact,unread,message_type 
+        from t_message_relation
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND (user_id = #{userId,jdbcType=VARCHAR} or contact_user_id = #{userId,jdbcType=VARCHAR})
+            </if>
+            <if test="contactUserId != null and contactUserId != ''">
+              AND (user_id = #{contactUserId,jdbcType=VARCHAR} or contact_user_id = #{contactUserId,jdbcType=VARCHAR})
+            </if>
+            <if test="isContact != null">
+              AND (is_contact = #{isContact,jdbcType=INTEGER})
+            </if>
+        </where>
+        limit 1
+    </select>
+    
+    <select id="seletctRelationCount" parameterType="messageRelation" resultType="int">
+        select count(1) from t_message_relation
+        <where>
+            <if test="id != null and id != ''">
+              AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+              AND (user_id = #{userId,jdbcType=VARCHAR} or contact_user_id = #{userId,jdbcType=VARCHAR})
+            </if>
+            <if test="contactUserId != null and contactUserId != ''">
+              AND (user_id = #{contactUserId,jdbcType=VARCHAR} or contact_user_id = #{contactUserId,jdbcType=VARCHAR})
+            </if>
+            <if test="isContact != null">
+              AND is_contact = #{isContact,jdbcType=INTEGER}
+            </if>
+            <if test="isContact == null">
+              AND recent_message is not null
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectUnreadCount" parameterType="messageRelation" resultType="int">
+        select count(1) from t_message
+        where relation_id = #{id,jdbcType=VARCHAR} and read_status = 0
+    </select>
+    
+	<insert id="saveRelation" parameterType="messageRelation">
+		insert into t_message_relation (id,user_id,contact_user_id,recent_message, update_time,is_contact,unread,message_type)
+		values (#{id,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{contactUserId,jdbcType=VARCHAR},
+		#{recentMessage,jdbcType=VARCHAR}, now(),#{isContact,jdbcType=INTEGER},#{unread,jdbcType=VARCHAR},#{messageType,jdbcType=VARCHAR});
+		<selectKey resultType="java.lang.String" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+    </insert>
+	
+	<update id="updateRelationByRelationId" parameterType="messageRelation">
+		update t_message_relation
+		<set>	
+			recent_message = #{recentMessage,jdbcType=VARCHAR},
+			message_type = #{messageType,jdbcType=VARCHAR},
+			update_time = now(),
+			<if test="isContact != null">
+			is_contact = #{isContact,jdbcType=INTEGER},
+			</if>
+			<if test="unread != null and unread != ''">
+			unread = #{unread,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteMessageByRelId" parameterType="string">
+		delete from t_message where relation_id = #{id,jdbcType=VARCHAR}
+	</delete>
+    
+    <select id="selectByIndex" parameterType="message" resultMap="messageResult">
+        select * from (select id,relation_id,message,location, sender_id,receiver_id, read_status,message_time,operate_time,message_type 
+        from t_message where relation_id = #{relationId,jdbcType=VARCHAR}
+        order by operate_time desc limit #{offset},#{limit}) s order by operate_time asc
+    </select>
+    
+    <select id="selectByIndexCount" parameterType="message" resultType="int">
+        select count(1) as count
+        from t_message where relation_id = #{relationId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectLatestTime" parameterType="string" resultMap="messageResult">
+        select max(operate_time) message_time from t_message where relation_id = #{relationId,jdbcType=VARCHAR}
+    </select>
+    
+</mapper>

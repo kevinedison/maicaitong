@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.RateMapper">
+   <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="rateResult" type="rate" extends="superResult">
+		<result property="code"        column="code"      jdbcType="VARCHAR"/>
+		<result property="name"        column="name"      jdbcType="VARCHAR"/>
+		<result property="rate"        column="rate"      jdbcType="DECIMAL"/>
+		<result property="amount"      column="amount"    jdbcType="DECIMAL"/>
+		<result property="result"      column="result"    jdbcType="DECIMAL"/>
+	</resultMap>
+
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+	<insert id="save" parameterType="rate">
+		insert into t_rate (id,code, name,rate,amount,result,
+		status,operator, operate_time)
+		values (#{id,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{rate,jdbcType=DECIMAL},#{amount,jdbcType=DECIMAL},#{result,jdbcType=DECIMAL},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+	    
+    <delete id="deleteById" parameterType="rate">
+		delete from t_rate where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	 <update id="updateById" parameterType="rate">
+	    update t_rate
+	    <set> 
+	      <if test="code != null">
+	        code = #{code,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null">
+	        name = #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="rate != null">
+	        rate = #{rate,jdbcType=VARCHAR},
+	      </if>
+	      <if test="amount != null">
+	        amount = #{amount,jdbcType=VARCHAR},
+	      </if>
+	      <if test="result != null">
+	        result = #{result,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null">
+	        status = #{status,jdbcType=INTEGER},
+	      </if>
+	      <if test="operator != null">
+	        operator = #{operator,jdbcType=VARCHAR},
+	      </if>
+	      <if test="operateTime != null">
+	        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where id = #{id,jdbcType=VARCHAR}
+    </update>
+  
+	<select id="selectById" parameterType="string" resultMap="rateResult">
+        select id,code, name,rate,amount,result,
+		<include refid="superColumn" />
+        from t_rate
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectByIndex" parameterType="rate" resultMap="rateResult">
+        select id,code, name,rate,amount,result,
+		<include refid="superColumn" />
+        from t_rate 
+        <where>
+            <if test="code != null and code != ''">
+              AND code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+              AND status = #{status,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by code desc
+        limit #{offset},#{limit}
+    </select>
+</mapper>

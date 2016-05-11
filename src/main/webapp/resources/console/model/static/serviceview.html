@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+
+<div class="content-info" style="display:none">
+   <nav>
+	  <ul class="pager">
+	    <li class="back pull-left"><a href="javascript:;"><span aria-hidden="true">&larr;</span> 返回</a></li>
+	  </ul>
+	</nav>
+   <table class="table" >
+	    <thead>
+	       <tr>
+	         <th width="200px">属性</th>
+	         <th>属性值</th>
+	       </tr>
+	    </thead>	
+	    <tbody class="content-detail-info" style="min-height:450px;"></tbody>
+	</table>
+</div>
+
+<table class="table table-hover content-list">
+     <thead>
+       <tr>
+         <td colspan="999">
+          <div class="table-operate-bar">
+		     <form class="form-horizontal query-list-form">
+		     	<tr>
+				  <div>
+				  
+				  	<label class="col-sm-1">商品名称</label>
+				    <div class="col-sm-2">
+				      <input class="form-control" id="service-name" name="service-name">
+				    </div>
+				    
+				    <label class="col-sm-1">商品编码</label>
+				    <div class="col-sm-2">
+				      <input class="form-control" id="service-code" name="service-code">
+				    </div>
+				    
+				    <label class="col-sm-1">商品提供商</label>
+				    <div class="col-sm-2">
+				      <input class="form-control" id="service-user" name="service-user">
+				    </div>
+				    
+				    <label class="col-sm-1">统计日期</label>
+				    <div class="col-sm-2">
+				      <input class="form-control" id="service-data" name="service-data">
+				    </div> 
+				  </div>
+			  </tr>
+			  <tr>
+			  	<div>
+				  	<button type="button" class="btn btn-success query-list-content-btn"><span class="glyphicon"></span> 查询 </button>
+				</div>
+			  </tr>	
+			</form>
+	      </div>
+         </td>
+       </tr>
+     </thead>
+  
+     <thead>
+       <tr>
+         <th width="100px">商品名称</th>
+         <th width="100px">商品编码</th>
+         <th width="150px">商品提供商</th>
+         <th width="150px">提供商编码</th>
+         <th width="50px">商品价格</th>
+         <th width="150px">访问数</th>
+         <th width="220px">订单日期</th>
+       </tr>
+     </thead>
+     <tbody class="content-wrap" style="min-height:450px;"></tbody>
+     <thead id="page-select" style="display:none">
+       <tr>
+         <td colspan="999">
+			<nav>
+			  <ul class="pager" page="0">
+			    <li><button class="pre btn btn-primary">上一页</button></li>
+			    <li><button class="next btn btn-primary">下一页</button></li>
+			  </ul>
+			</nav>
+         </td>
+       </tr>
+     </thead>
+</table>
+
+</body>
+<script>
+
+var loadAndRender = function(page,condition) {
+	condition = condition || {};
+	condition.page = page;
+	condition.pageSize = daidian.config.pageSize;
+	$.getJSON("/console/pageview/list", condition, function(data){
+		if(data && data.code == '000000') {
+            if(!data.data || !data.data.count || data.data.count == 0) {
+                $('.content-wrap').append('<tr><td colspan="999" class="text-center">没有数据</td></tr>');
+                return;
+            }else{
+            	$('#page-select').show();
+            }
+
+            if((page * daidian.config.pageSize) < data.data.count) {
+                $(".content-list  .pager .next").attr('disabled',false);
+            } else {
+            	$(".content-list  .pager .next").attr('disabled',true);
+            }
+
+            var contents = data.data.data || [];
+            contents.forEach(function(curData) {
+            	var html = [];
+            	html.push('<tr>');                
+            	html.push('   <td>'+(curData.serviceInfo || {}).title+'</td>');
+            	html.push('   <td>'+(curData.serviceInfo || {}).id+'</td>');
+            	html.push('   <td>'+((curData.userInfo || {}).realName || (curData.userInfo || {}).nickName)+'</td>');
+            	html.push('   <td>'+(curData.userInfo || {}).userId+'</td>');
+            	html.push('   <td>'+(curData.serviceInfo || {}).price+'</td>');
+            	html.push('   <td>'+curData.count+'</td>');
+            	//html.push('   <td><img src="'+getPictureUrl(curData.cover)+'" style="height:100px;width:100px;" class="img-rounded"></td>');
+            	html.push('   <td>'+(curData.staticTime || '')+'</td>');
+            	html.push('</tr>');
+            	$(html.join(' ')).data('data', curData).appendTo('.content-wrap');
+            });
+        } else {
+ 
+        }
+	});
+};
+
+$(document).ready(function(){
+
+	$('.query-list-content-btn').click(function(evt){
+		var target = $(evt.target);
+	
+		var serviceId = $('#service-code').val();			
+		var serviceContent = $('#service-name').val();
+		var userId = $('#service-user').val();
+		var staticTime = $('#service-data').val();
+		
+		var condition = {};
+		
+		if(serviceId){
+			condition.serviceId = serviceId;
+		}
+		
+		if(serviceContent){
+			condition.serviceContent = serviceContent;
+		}
+		
+		if(userId){
+			condition.userId = userId;
+		}
+		
+		if(staticTime){
+			condition.staticTime = staticTime;
+		}
+		
+		$(".content-list .pager").attr('page',0);
+		$(".content-list .pager").attr('condition',JSON.stringify(condition));
+		$('.content-wrap').html(' ');
+		$('.content-list .pager .next').trigger('click');
+	});
+	
+	$('.content-list .pager button').click(function(evt) {
+		var target = $(evt.target);
+		var page = $(".content-list .pager").attr('page') || 0; 
+		var conditionStr = $(".content-list .pager").attr('condition') || '{}';
+		var condition = JSON.parse(conditionStr);
+		if(target.hasClass('pre')) {
+			page--;
+		} else if(target.hasClass('next')){
+			page++;
+		}
+		if(page < 1) {page = 1;}
+	        	
+		if(page == 1) {
+			$(".content-list .pager .pre").attr('disabled',true);
+	    } else {
+	    	$(".content-list .pager .pre").attr('disabled',false);
+	    } 
+		
+		$(".content-list .pager").attr('page',page);
+		$(".content-list .pager").attr('condition',conditionStr);
+		$('.content-wrap').html('');
+		loadAndRender(page,condition);
+	});	
+	
+	$('.content-list .pager .next').trigger('click');
+});
+</script>
+</html>

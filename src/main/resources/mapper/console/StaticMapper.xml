@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.console.StaticMapper">
+
+	<resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR" />
+		<result property="operateTime" column="operate_time" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="staticServiceResult" type="staticService" extends="superResult">
+		<result property="serviceId"     column="serviceid"    jdbcType="VARCHAR" />
+		<result property="serviceContent" column="servicecontent" jdbcType="VARCHAR" />
+		<result property="userId"    	 column="userid"   jdbcType="VARCHAR" />
+		<result property="count"    	 column="ordercount"   jdbcType="INTEGER" />
+		<result property="staticTime"    column="static_time"   jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="pvResult" type="staticService" extends="superResult">
+		<result property="serviceId" 		column="serviceid" 		jdbcType="VARCHAR" />
+		<result property="serviceContent"   column="servicecontent" jdbcType="VARCHAR" />
+		<result property="userId" 		    column="userid" 		jdbcType="VARCHAR" />
+		<result property="count" 	        column="viewcount" 		jdbcType="INTEGER" />
+		<result property="staticTime"   	column="static_time" 	jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="superColumn">
+		operate_time
+	</sql>
+
+	<select id="selectByIndex" parameterType="staticService" resultMap="staticServiceResult">
+		select id,serviceid,servicecontent,userid,ordercount,static_time,
+		<include refid="superColumn" />
+		from t_order_daystatic
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="serviceId != null and serviceId != ''">
+				AND serviceid = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userid = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="staticTime != null and staticTime != ''">
+				AND static_time = #{staticTime,jdbcType=VARCHAR}
+			</if>
+			<if test="serviceContent != null and serviceContent != ''">
+				AND servicecontent like '%${serviceContent}%'
+			</if>
+			limit #{offset},#{limit}
+		</where>
+	</select>
+
+	<select id="selectByIndexCount" parameterType="staticService" resultType="int">
+		select count(1) as count
+		from t_order_daystatic
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="serviceId != null and serviceId != ''">
+				AND serviceid = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userid = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="staticTime != null and staticTime != ''">
+				AND static_time = #{staticTime,jdbcType=VARCHAR}
+			</if>
+			<if test="serviceContent != null and serviceContent != ''">
+				AND servicecontent like '%${serviceContent}%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectPageViewByIndex" parameterType="staticService" resultMap="pvResult">
+		select id,serviceid,servicecontent,userid,viewcount,static_time,
+		<include refid="superColumn" />
+		from t_view_daystatic
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="serviceId != null and serviceId != ''">
+				AND serviceid = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userid = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="staticTime != null and staticTime != ''">
+				AND static_time = #{staticTime,jdbcType=VARCHAR}
+			</if>
+			<if test="serviceContent != null and serviceContent != ''">
+				AND servicecontent like '%${serviceContent}%'
+			</if>
+			limit #{offset},#{limit}
+		</where>
+	</select>
+
+	<select id="selectPageViewByIndexCount" parameterType="staticService" resultType="int">
+		select count(1) as count
+		from t_view_daystatic
+		<where>
+			1=1
+			<if test="id != null">
+				AND id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="serviceId != null and serviceId != ''">
+				AND serviceid = #{serviceId,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userid = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="staticTime != null and staticTime != ''">
+				AND static_time = #{staticTime,jdbcType=VARCHAR}
+			</if>
+			<if test="serviceContent != null and serviceContent != ''">
+				AND servicecontent like '%${serviceContent}%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="dayStaticPageView" resultMap="pvResult">
+		<![CDATA[select reqid serviceid,count(1) viewcount,DATE_FORMAT(operate_time,'%Y-%m-%d') static_time 
+		from t_page_view where (requesturl = '/wx/service' or requesturl = '/wx/need') 
+		and staticflag = 0 and operate_time < DATE_FORMAT(now(),'%Y-%m-%d')
+		group by reqid,DATE_FORMAT(operate_time,'%Y-%m-%d') order by operate_time asc]]>
+	</select>
+	
+	<update id="batchUpdatePageView">
+		<![CDATA[update t_page_view set staticflag = 1 where (requesturl = '/wx/service' or requesturl = '/wx/need') 
+		and staticflag = 0 and operate_time < DATE_FORMAT(now(),'%Y-%m-%d') ]]>
+	</update>
+
+</mapper>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portal.mapper.UserMapper">
+
+    <resultMap id="superResult" type="super">
+		<result property="id"          column="id"           jdbcType="VARCHAR"/>
+		<result property="status"      column="status"       jdbcType="INTEGER"/>
+		<result property="operator"    column="operator"     jdbcType="VARCHAR"/>
+		<result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="userResult" type="user" extends="superResult">
+		<result property="userId"             column="user_id"          jdbcType="VARCHAR"/>
+		<result property="grade"              column="grade"            jdbcType="INTEGER"/>
+		<result property="credit"             column="credit"           jdbcType="INTEGER"/>
+		<result property="nickName"           column="nick_name"        jdbcType="VARCHAR"/>
+		<result property="phoneNumber"        column="phone_number"     jdbcType="VARCHAR"/>
+		<result property="gender"             column="gender"           jdbcType="INTEGER"/>
+		<result property="age"                column="age"              jdbcType="VARCHAR"/>
+		<result property="avatar"             column="avatar"           jdbcType="VARCHAR"/>		
+		<result property="identity"           column="identity"         jdbcType="VARCHAR"/>			
+		<result property="language"           column="language"        	jdbcType="VARCHAR"/>				
+		<result property="hometown"           column="hometown"    		jdbcType="VARCHAR"/>	
+		<result property="introduce"          column="introduce"       	jdbcType="VARCHAR"/>	
+		<result property="realName"           column="real_name"   		jdbcType="VARCHAR"/>
+		<result property="wechat"             column="wechat"    		jdbcType="VARCHAR"/>
+		<result property="email"              column="email"    		jdbcType="VARCHAR"/>
+		<result property="occupation"         column="occupation"       jdbcType="VARCHAR"/>
+		<result property="certificateNo"      column="certificate_no"   jdbcType="VARCHAR"/>	
+		<result property="certificate"        column="certificate"      jdbcType="VARCHAR"/>
+		<result property="identityAuth"       column="identity_auth"    jdbcType="INTEGER"/>
+		<result property="account"            column="account"          jdbcType="VARCHAR"/>
+		<result property="country"            column="country"          jdbcType="VARCHAR"/>
+		<result property="city"               column="city"             jdbcType="VARCHAR"/>
+		<result property="constellation"      column="constellation"    jdbcType="VARCHAR"/>		
+		<result property="servicetype"        column="servicetype"      jdbcType="VARCHAR"/>			
+		<result property="recipient"          column="recipient"        jdbcType="VARCHAR"/>
+		<result property="orderCount"         column="ordercount"       jdbcType="INTEGER"/>
+		<result property="commentCount"       column="commentcount"     jdbcType="INTEGER"/>
+		<result property="balance"            column="balance"          jdbcType="DECIMAL"/>
+		<result property="inviteId"           column="invite_id"        jdbcType="VARCHAR"/>
+		<result property="remark"             column="remark"           jdbcType="VARCHAR"/>
+		<result property="recommendation"     column="recommendation"   jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="loginResult" type="user">
+	    <result property="id"                  column="id"               jdbcType="VARCHAR"/>	
+	    <result property="userId"              column="user_id"          jdbcType="VARCHAR"/>
+		<result property="account"             column="account"          jdbcType="VARCHAR"/>
+		<result property="pwd"                 column="phone_number"     jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="userStaticResult" type="user">
+		<result property="userId"             column="user_id"          jdbcType="VARCHAR"/>
+		<result property="grade"              column="grade"            jdbcType="INTEGER"/>
+		<result property="credit"             column="credit"           jdbcType="INTEGER"/>
+		<result property="nickName"           column="nick_name"        jdbcType="VARCHAR"/>
+	</resultMap>
+	
+    <sql id="superColumn">
+        status, operator, operate_time
+	</sql>
+	
+    <insert id="save" parameterType="user">
+		insert into t_user (user_id,grade,credit,nick_name, phone_number,gender,age,avatar,identity,language,hometown,
+		introduce,real_name,wechat,email,occupation,certificate_no,certificate,identity_auth,account,country,city,constellation,servicetype,recipient,invite_id,
+		status, operator, operate_time)
+		values (#{userId,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{credit,jdbcType=INTEGER},#{nickName,jdbcType=VARCHAR},#{phoneNumber,jdbcType=VARCHAR},#{gender,jdbcType=INTEGER},#{age,jdbcType=VARCHAR},
+		#{avatar,jdbcType=VARCHAR},#{identity,jdbcType=VARCHAR},#{language,jdbcType=VARCHAR},#{hometown,jdbcType=VARCHAR},#{introduce,jdbcType=VARCHAR},#{realName,jdbcType=VARCHAR},
+		#{wechat,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{occupation,jdbcType=VARCHAR},
+		#{certificateNo,jdbcType=VARCHAR},#{certificate,jdbcType=VARCHAR},#{identityAuth,jdbcType=INTEGER},
+		#{account,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{constellation,jdbcType=VARCHAR},#{servicetype,jdbcType=VARCHAR},#{recipient,jdbcType=VARCHAR},#{inviteId,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},#{operator,jdbcType=VARCHAR},#{operateTime,jdbcType=TIMESTAMP});
+    </insert>
+	
+	<update id="updateById" parameterType="user">
+    update t_user
+    <set>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=TINYINT},
+      </if>
+      <if test="credit != null">
+        credit = #{credit,jdbcType=TINYINT},
+      </if>
+      <if test="nickName != null and nickName != ''">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null and phoneNumber != ''">
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="age != null and age != ''">
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null and avatar != ''">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null and language != ''">
+        language = #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="hometown != null and hometown != ''">
+        hometown = #{hometown,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null and introduce != ''">
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null and realName != ''">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null and wechat != ''">
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email != ''">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null and occupation != ''">
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateNo != null and certificateNo != ''">
+        certificate_no = #{certificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="certificate != null and certificate != ''">
+        certificate = #{certificate,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null and country != ''">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null and city != ''">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null and operator != ''">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="identity != null and identity != ''">
+        identity = #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="constellation != null and constellation != ''">
+        constellation = #{constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="servicetype != null and servicetype != ''">
+        servicetype = #{servicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="recipient != null and recipient != ''">
+        recipient = #{recipient,jdbcType=VARCHAR},
+      </if>
+      <if test="identityAuth != null and identityAuth != ''">
+        identity_auth = #{identityAuth,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null and remark != ''">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendation != null">
+        recommendation = #{recommendation,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null">
+        ordercount = ordercount + #{orderCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null">
+        commentcount = commentcount + #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DECIMAL},
+      </if> 
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectById" parameterType="string" resultMap="userResult">
+        select user_id,grade,credit,nick_name, phone_number,gender,age,avatar,language,hometown,
+		introduce,real_name,wechat,email,occupation,
+		certificate,certificate_no,identity_auth,remark,account,country,city,identity,constellation,servicetype,recipient,invite_id,recommendation,
+		ordercount,commentcount,balance,
+		<include refid="superColumn" />
+        from t_user 
+        where user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+	
+  <select id="selectOne" parameterType="user" resultMap="userResult">
+        select user_id,grade,credit,nick_name, phone_number,gender,age,avatar,language,hometown,
+		introduce,real_name,wechat,email,occupation,
+		certificate,certificate_no,identity_auth,remark,account,country,city,identity,constellation,servicetype,recipient,invite_id,recommendation,
+		ordercount,commentcount,balance,
+		<include refid="superColumn" />
+        from t_user 
+        <where>
+            1=1
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="account != null and account != ''">
+              AND account = #{account,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+ 
+	<select id="selectByIndex" parameterType="user" resultMap="userResult">
+        select user_id,grade,credit,nick_name, phone_number,gender,age,avatar,language,hometown,
+		introduce,real_name,wechat,email,occupation,
+		certificate,certificate_no,identity_auth,remark,account,country,city,identity,constellation,servicetype,recipient,invite_id,recommendation,
+		ordercount,commentcount,balance,
+	   <include refid="superColumn" />
+        from t_user 
+        <where>
+            status = 1
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="identityAuth != null">
+              AND identity_auth = #{identityAuth,jdbcType=INTEGER}
+            </if>
+            <if test="country != null and country != ''">
+              AND country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="identity != null and identity != ''">
+              AND identity = #{identity,jdbcType=VARCHAR}
+            </if>
+            <if test="inviteId != null and inviteId != ''">
+              AND invite_id = #{inviteId,jdbcType=VARCHAR}
+            </if>
+            <if test="recommendation != null">
+              AND recommendation = #{recommendation,jdbcType=VARCHAR}
+            </if>
+            <if test="realName != null and realName != ''">
+              AND real_name like '%${realName}%'
+            </if>
+            <if test="nickName != null and nickName != ''">
+              AND (real_name like '%${nickName}%' or nick_name like '%${nickName}%')
+            </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+    	
+    
+    <select id="selectByIndexCount" parameterType="user" resultType="int">
+        select count(1) as count
+        from t_user 
+        <where>
+            status = 1
+            <if test="userId != null and userId != ''">
+              AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="identityAuth != null">
+              AND identity_auth = #{identityAuth,jdbcType=INTEGER}
+            </if>
+            <if test="country != null and country != ''">
+              AND country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="identity != null and identity != ''">
+              AND identity = #{identity,jdbcType=VARCHAR}
+            </if>
+            <if test="inviteId != null and inviteId != ''">
+              AND invite_id = #{inviteId,jdbcType=VARCHAR}
+            </if>
+            <if test="recommendation != null">
+              AND recommendation = #{recommendation,jdbcType=VARCHAR}
+            </if>
+            <if test="realName != null and realName != ''">
+              AND real_name like '%${realName}%'
+            </if>
+            <if test="nickName != null and nickName != ''">
+              AND (real_name like '%${nickName}%' or nick_name like '%${nickName}%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectLoginInfo" parameterType="string" resultMap="loginResult">
+        select id,user_id,account,pwd
+        from t_user_info where account = #{account,jdbcType=VARCHAR}
+    </select>
+</mapper>

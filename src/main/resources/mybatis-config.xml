@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="cacheEnabled"       value="true" />
+	</settings>
+	
+	<typeAliases>
+	    <typeAlias alias="super"   type="com.portal.bean.entity.base.PagingEntity" />
+	    <typeAlias alias="optLog"  type="com.portal.bean.entity.OptLog" />
+	    <typeAlias alias="location"  type="com.portal.bean.entity.Location" />
+	    <typeAlias alias="feedback"  type="com.portal.bean.entity.Feedback" />
+	    <typeAlias alias="rate"  type="com.portal.bean.entity.Rate" />
+	    <typeAlias alias="order"   type="com.portal.bean.entity.Order" />
+	    <typeAlias alias="user" type="com.portal.bean.entity.User"/>
+	    <typeAlias alias="simpUser" type="com.portal.bean.entity.SimpUser"/>
+	    <typeAlias alias="need" type="com.portal.bean.entity.Need"/>
+	    <typeAlias alias="needAccept"  type="com.portal.bean.entity.NeedAccept"/>
+	    <typeAlias alias="userService" type="com.portal.bean.entity.UserService"/>
+	    <typeAlias alias="message" type="com.portal.bean.entity.Message"/>
+	    <typeAlias alias="messageRelation" type="com.portal.bean.entity.MessageRelation" />
+	    <typeAlias alias="comment" type="com.portal.bean.entity.Comment"/>
+	    <typeAlias alias="favorite" type="com.portal.bean.entity.Favorite"/>
+	    <typeAlias alias="bill" type="com.portal.bean.entity.Bill"/>
+	    
+	    
+	    <typeAlias alias="brand" type="com.portal.bean.console.Brand"/>
+	    <typeAlias alias="category" type="com.portal.bean.console.Category"/>
+	    <typeAlias alias="staticService" type="com.portal.bean.console.StaticService"/>
+	</typeAliases>
+	
+	<mappers>
+	    <mapper resource="mapper/OptLogMapper.xml" /> 
+	    <mapper resource="mapper/LocationMapper.xml" /> 
+	    <mapper resource="mapper/FeedbackMapper.xml" /> 
+	    <mapper resource="mapper/RateMapper.xml" /> 
+	    <mapper resource="mapper/OrderMapper.xml" />
+	    <mapper resource="mapper/UserMapper.xml" />
+	    <mapper resource="mapper/NeedMapper.xml" />
+	    <mapper resource="mapper/ServiceMapper.xml" />
+	    <mapper resource="mapper/MessageMapper.xml" />
+	    <mapper resource="mapper/CommentMapper.xml" />
+	    <mapper resource="mapper/FavoriteMapper.xml" />
+	    <mapper resource="mapper/TaskMapper.xml" />
+	    <mapper resource="mapper/BillMapper.xml" />
+	    
+	    <mapper resource="mapper/console/BrandMapper.xml" />
+	    <mapper resource="mapper/console/CategoryMapper.xml" />
+	    <mapper resource="mapper/console/StaticMapper.xml" />
+	</mappers>
+</configuration>
