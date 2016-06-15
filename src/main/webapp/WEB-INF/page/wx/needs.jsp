@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>带点啥</title>
+    <title>卖菜通</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -29,7 +29,7 @@
                         <input type="text" class="mui-text-right" id="need_title" placeholder="标题">
                     </div>
                     <div class="mui-text-right notice-msg">
-                        <p>让买手快速了解商品,建议规格+品牌</p>
+                        <p>让菜农快速了解商品,建议规格+品牌</p>
                     </div>
                     <div class="mui-input-row" id="service-pic">
                         <label>商品图片</label>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="mui-text-right notice-msg">
-                        <p>图片大小480*480,提供更多地图片让买手快速了解商品,避免多次沟通</p>
+                        <p>图片大小480*480,提供更多地图片让菜农快速了解商品,避免多次沟通</p>
                     </div>
                     <div class="row" style="height:auto;">
                         <label style="padding-left: 15px;">描述</label>
@@ -73,7 +73,7 @@
                         <input type="number" class="mui-text-right" id="need-service-price" placeholder="服务费用" min=0>
                     </div>
                     <div class="mui-text-right notice-msg">
-                        <p>单位RMB,代买服务费用,建议不要包含商品价钱及邮寄费用,最终订单价格:买手确定的商品及邮寄费用+买家确定的服务费用</p>
+                        <p>单位RMB,代买服务费用,建议不要包含商品价钱及邮寄费用,最终订单价格:菜农确定的商品及邮寄费用+买家确定的服务费用</p>
                     </div>
                 </form>
                 <a class="order-submit">提交</a>
@@ -83,7 +83,7 @@
     <div class="mui-inner-wrap">
         <header class="mui-bar mui-bar-nav">
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-            <h1 class="mui-title">带点啥-求购</h1>
+            <h1 class="mui-title">卖菜通-求购</h1>
             <span class="mui-pull-right add-need"><i class="mui-icon mui-icon-plus"></i><i style="font-style:normal;line-height:1px">发布求购</i></span>
         </header>
         <nav class="mui-bar mui-bar-tab bottom-nav">
@@ -97,7 +97,7 @@
 		    </a>
 		    <a class="mui-tab-item buyers" action="/wx/buyers">
 		        <span class="mui-icon mui-icon-contact"></span>
-		        <span class="mui-tab-label">买手</span>
+		        <span class="mui-tab-label">菜农</span>
 		    </a>
 		    <a class="mui-tab-item messages" action="/wx/messages">
 		        <span class="mui-icon mui-icon-chatbubble"></span>

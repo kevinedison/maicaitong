@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>带点啥</title>
+    <title>卖菜通</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -16,14 +16,14 @@
     <div class="mui-inner-wrap">
         <header class="mui-bar mui-bar-nav">
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-            <h1 class="mui-title">带点啥-服务检索</h1>     
+            <h1 class="mui-title">卖菜通-服务检索</h1>     
         </header>
         <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
             <div class="mui-scroll">
             	<div>
 	        		<form class="mui-input-group service-search">
 				        <div class="mui-input-row">
-				            <input type="text" id="search_name" placeholder="请输入商品名或买手昵称，支持模糊检索">
+				            <input type="text" id="search_name" placeholder="请输入商品名或菜农昵称，支持模糊检索">
 				        </div>
 				        <div class="mui-button-row">
 				            <button type="button" id="search_button" class="mui-btn mui-btn-primary">检索</button>
@@ -32,7 +32,7 @@
         		</div>
                 <ul class="mui-table-view service-row">
                     <li class="mui-table-view-cell mui-table-panel mui-col-xs-12" id="buyer_wrap" style="display:none">
-                        <div class="panel-title">买手列表</div>
+                        <div class="panel-title">菜农列表</div>
                         <div class="service-wrap" id="buyer_list" ></div>
                     </li>
                     <li class="mui-table-view-cell mui-table-panel mui-col-xs-12" id="service_wrap" style="display:none">
@@ -194,11 +194,11 @@
         	        });
         	        $('#buyer_list').append(buyerHtml.join(''));
         		}else {
-	                mui.toast('检索买手失败，请刷新页面重试');
+	                mui.toast('检索菜农失败，请刷新页面重试');
 	            }
         	},
         	error : function(){
-        		mui.toast('检索买手失败，请刷新页面重试');
+        		mui.toast('检索菜农失败，请刷新页面重试');
         	}    	
         });
 	};

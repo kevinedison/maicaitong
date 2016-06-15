@@ -2,7 +2,7 @@
 <%@ include  file="common/header.jsp"%>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-各国特卖</h1>
+    <h1 class="mui-title">卖菜通-各国特卖</h1>
     <a action="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>
 </header>
 <div class="mui-content mui-row mui-fullscreen">

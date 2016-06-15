@@ -2,7 +2,7 @@
 <%@ include  file="common/header.jsp"%>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-</h1>
+    <h1 class="mui-title">卖菜通-</h1>
     <a action="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>
 </header>
 <nav class="mui-bar mui-bar-tab user-nav">
@@ -298,7 +298,7 @@
 	            if(data && data.code == '000000') {
 	            	var user = data.data || {};
 	            	
-	            	$('.mui-title').text('带点啥-'+(user.nickName))
+	            	$('.mui-title').text('卖菜通-'+(user.nickName))
 	            	var infoHtml = [];
 	            	infoHtml.push('<div class="user-img"><img src="'+getPictureUrl(user.avatar,2)+'" /></div>');
 	            	infoHtml.push('<h4 class="user-name">'+((user.nickName))+ '</h4>');

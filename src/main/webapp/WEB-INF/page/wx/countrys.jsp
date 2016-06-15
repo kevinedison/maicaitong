@@ -2,7 +2,7 @@
 <%@ include  file="common/header.jsp"%>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-全部国家</h1>
+    <h1 class="mui-title">卖菜通-全部国家</h1>
     <a href="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>
 </header>
 <div class="mui-content">
@@ -31,7 +31,7 @@
 	                    html.push(' <a action="/wx/country?country='+country.id+'">');
 	                    html.push('  <div class="country-info">');
 	                    html.push('   <div class="country-name">'+country.name +'<span>' + country.code + '</span></div>');
-	                    html.push('   <div class="country-number"><button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" country="'+country.code+'">'+country.buyerCount+'买手,'+country.serviceCount+'商品'+'</button></div>');
+	                    html.push('   <div class="country-number"><button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" country="'+country.code+'">'+country.buyerCount+'菜农,'+country.serviceCount+'商品'+'</button></div>');
 	                    html.push('  </div>');
 	                    html.push(' </a>');
 	                    html.push('</li>');

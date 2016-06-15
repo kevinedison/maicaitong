@@ -2,7 +2,7 @@
 <%@ include  file="common/header.jsp"%>
 <header class="mui-bar mui-bar-nav">
     <a  action="/wx/top" class="mui-icon mui-icon-home mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-首页</h1>
+    <h1 class="mui-title">卖菜通-首页</h1>
 </header>
 <nav class="mui-bar mui-bar-tab bottom-nav">
     <a class="mui-tab-item top mui-active" action="/wx/top">
@@ -15,7 +15,7 @@
     </a>
     <a class="mui-tab-item buyers" action="/wx/buyers">
         <span class="mui-icon mui-icon-contact"></span>
-        <span class="mui-tab-label">买手</span>
+        <span class="mui-tab-label">菜农</span>
     </a>
     <a class="mui-tab-item messages" action="/wx/messages">
         <span class="mui-icon mui-icon-chatbubble"></span>
@@ -30,88 +30,39 @@
     <div id="top" class="mui-control-content mui-active">
 		<ul class="mui-table-view mui-grid-view mui-grid-9 top-nav-bar">
             <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=vitacost">
+                <a action="/wx/search?type=fruit">
                     <span class="categroy-icon categroy-icon-milk"></span>
-                    <div class="mui-media-body">母婴</div>
+                    <div class="mui-media-body">水果</div>
                 </a>
             </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=cosmetics">
+                <a action="/wx/search?type=vegetables">
                     <span class="categroy-icon categroy-icon-cosmetics"></span>
-                    <div class="mui-media-body">化妆品</div>
+                    <div class="mui-media-body">蔬菜</div>
                 </a>
             </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=shoes">
+                <a action="/wx/search?type=animal">
                     <span class="categroy-icon categroy-icon-shoes"></span>
-                    <div class="mui-media-body">男女鞋</div>
+                    <div class="mui-media-body">粮油副食</div>
                 </a>
             </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=luggagebags">
+                <a action="/wx/search?type=aquatic">
                     <span class="categroy-icon categroy-icon-bag"></span>
-                    <div class="mui-media-body">箱包</div>
+                    <div class="mui-media-body">肉禽蛋奶</div>
                 </a>
             </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
                 <a action="/wx/search?type=watch">
                     <span class="categroy-icon categroy-icon-watch"></span>
-                    <div class="mui-media-body">手表</div>
+                    <div class="mui-media-body">休闲食品</div>
                 </a>
             </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
                 <a action="/wx/search?type=food">
                     <span class="categroy-icon categroy-icon-food"></span>
-                    <div class="mui-media-body">食品</div>
-                </a>
-            </li>
-           
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=homefurnish">
-                    <span class="categroy-icon categroy-icon-home"></span>
-                    <div class="mui-media-body">家居</div>
-                </a>
-            </li>  
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=outdoorsport">
-                    <span class="categroy-icon categroy-icon-sport"></span>
-                    <div class="mui-media-body">户外运动</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=digital">
-                    <span class="categroy-icon categroy-icon-shuma"></span>
-                    <div class="mui-media-body">数码</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=healthproduct">
-                    <span class="categroy-icon categroy-icon-baojian"></span>
-                    <div class="mui-media-body">保健品</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=dress">
-                    <span class="categroy-icon categroy-icon-t"></span>
-                    <div class="mui-media-body">男女装</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=accessory">
-                    <span class="categroy-icon categroy-icon-pei"></span>
-                    <div class="mui-media-body">配饰</div>
-                </a>
-            </li>  
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=special">
-                    <span class="categroy-icon categroy-icon-special"></span>
-                    <div class="mui-media-body">特产</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-                <a action="/wx/search?type=entertainment">
-                    <span class="categroy-icon categroy-icon-fovarite"></span>
-                    <div class="mui-media-body">文娱爱好</div>
+                    <div class="mui-media-body">水产海鲜</div>
                 </a>
             </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
@@ -123,7 +74,7 @@
              <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
                 <a action="/wx/account-buyer">
                     <span class="categroy-icon categroy-icon-buyer"></span>
-                    <div class="mui-media-body">成为买手</div>
+                    <div class="mui-media-body">成为菜农</div>
                 </a>
             </li>
         </ul>
@@ -131,8 +82,8 @@
         <div class="dividing"></div>
         <ul class="mui-table-view hot-buyer">
             <li class="mui-table-view-cell mui-table-panel mui-col-xs-12">
-                <div class="panel-title">明星买手</div>
-                <div class="panel-more"><a action="/wx/buyers">所有买手 <span class="mui-icon mui-icon-arrowright" style="font-size: 13px;"></span>  </a></div>
+                <div class="panel-title">明星菜农</div>
+                <div class="panel-more"><a action="/wx/buyers">所有菜农 <span class="mui-icon mui-icon-arrowright" style="font-size: 13px;"></span>  </a></div>
             </li>
         </ul>
     </div>
@@ -192,11 +143,11 @@
 	                });
 	        	   	$('.hot-buyer').append(buyerHtml.join(''));
 	            } else {
-	                mui.toast('加载明星买手失败，请刷新页面重试');
+	                mui.toast('加载明星菜农失败，请刷新页面重试');
 	            }
 	        },
 	        error : function() {
-	            mui.toast('加载明星买手失败，请刷新页面重试');
+	            mui.toast('加载明星菜农失败，请刷新页面重试');
 	        }
 	    });	   	
     };

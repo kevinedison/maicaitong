@@ -11,7 +11,7 @@
 </style>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-买家协议</h1>
+    <h1 class="mui-title">卖菜通-买家协议</h1>
     <a href="/wx/account" class="mui-icon mui-icon-person mui-pull-right"></a>
 </header>
 <div class="mui-content">

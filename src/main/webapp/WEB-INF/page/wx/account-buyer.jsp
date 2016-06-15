@@ -4,21 +4,21 @@
 <link href="/resources/wx/css/mui.poppicker.css" rel="stylesheet" />
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-买手认证</h1>
+    <h1 class="mui-title">卖菜通-菜农认证</h1>
     <a href="/wx/account" class="mui-icon mui-icon-person mui-pull-right"></a>
 </header>
 <div class="mui-content">
-    <div class="buyer-identifying" style="display:none">买手认证中</div>
+    <div class="buyer-identifying" style="display:none">菜农认证中</div>
     <form class="mui-input-group account-edit">
         <div class="mui-input-row">
             <label>真实名称</label>
             <input type="text" id="real_name" placeholder="真实名称">
         </div>
         <div class="mui-text-right notice-msg">
-            <p>用真实姓名才能通过买手认证</p>
+            <p>用真实姓名才能通过菜农认证</p>
         </div>
-        <div class="mui-input-row">
-            <label>买手身份</label>
+        <!--div class="mui-input-row">
+            <label>菜农身份</label>
             <select class="user-identity-row" id="user_identity" style="direction: rtl;padding-right:10px;"></select>
         </div>
         <div class="mui-input-row customize_user_identity" style="display:none">
@@ -27,13 +27,13 @@
         </div>
         <div class="mui-text-right notice-msg">
             <p>用真实身份才能能更好获取买家信任</p>
-        </div>
+        </div-->
         <div class="mui-input-row">
-            <label>国家</label>
-            <input id='cityPicker' type="text" placeholder="所在国家" readonly="readonly">
+            <label>所在省市</label>
+            <input id='cityPicker' type="text" placeholder="所在省市" readonly="readonly">
         </div>
         <div class="mui-text-right notice-msg">
-            <p>选择目前所在国家,为买家提供最贴切服务</p>
+            <p>选择目前所在省市,为买家提供最贴切服务</p>
         </div>
         <div class="mui-input-row">
             <label>证件号码</label>
@@ -54,7 +54,7 @@
             <p>简单的自我介绍，增加买家的信任感，最多100字</p>
         </div>
         <div class="mui-input-row mui-checkbox mui-left">
-			<label>已阅并同意遵守买手协议</label>
+			<label>已阅并同意遵守菜农协议</label>
 			<input name="checkbox" type="checkbox" class="buyer-agreement-check">
 		</div>
 					

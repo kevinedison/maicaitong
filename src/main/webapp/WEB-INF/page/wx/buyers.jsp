@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>带点啥</title>
+    <title>卖菜通</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -23,7 +23,7 @@
                     <tr>
                         <th>姓名</th>
                         <td>
-                            <input type="search" class="mui-input-clear buyer-name" placeholder="买手姓名">
+                            <input type="search" class="mui-input-clear buyer-name" placeholder="菜农姓名">
                         </td>
                     </tr>
                     <tr>
@@ -47,7 +47,7 @@
     <div class="mui-inner-wrap">
         <header class="mui-bar mui-bar-nav">
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-            <h1 class="mui-title">带点啥-全部买手</h1>
+            <h1 class="mui-title">卖菜通-全部菜农</h1>
             <a id="offCanvasBtn" class="mui-icon mui-action-menu mui-icon-bars mui-pull-right"></a>
         </header>
         <nav class="mui-bar mui-bar-tab bottom-nav">
@@ -61,7 +61,7 @@
             </a>
             <a class="mui-tab-item buyer mui-active" action="/wx/buyers">
                 <span class="mui-icon mui-icon-contact"></span>
-                <span class="mui-tab-label">买手</span>
+                <span class="mui-tab-label">菜农</span>
             </a>
             <a class="mui-tab-item messages" action="/wx/messages">
                 <span class="mui-icon mui-icon-chatbubble"></span>
@@ -125,7 +125,7 @@
                 if(data && data.code == '000000') {
                     if(!data.data.count || data.data.count == 0) {
                         $(".paging-bar").hide();
-                        $('.buyer-wrap').append('<li class="mui-table-view-cell mui-table-panel mui-col-xs-12 mui-text-center">没有买手</li>');
+                        $('.buyer-wrap').append('<li class="mui-table-view-cell mui-table-panel mui-col-xs-12 mui-text-center">没有菜农</li>');
                         return;
                     }
                     if((page * daidian.config.pageSize) < data.data.count) {
@@ -179,11 +179,11 @@
                     });
                     $('.buyer-wrap').append(buyerHtml.join(''));
                 } else {
-                    mui.toast('加载买手失败，请刷新页面重试');
+                    mui.toast('加载菜农失败，请刷新页面重试');
                 }
             },
             error : function() {
-                mui.toast('加载买手失败，请刷新页面重试');
+                mui.toast('加载菜农失败，请刷新页面重试');
             }
         });
     };

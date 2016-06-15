@@ -2,7 +2,7 @@
 <%@ include  file="common/header.jsp"%>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-我的求带</h1>
+    <h1 class="mui-title">卖菜通-我的求购</h1>
     <a action="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>    
 </header>
 <div class="mui-content">
@@ -18,7 +18,7 @@
     <div class="dividing"></div>
     <ul class="mui-table-view need-buyer-wrap">
         <li class="mui-table-view-cell mui-table-panel mui-col-xs-12">
-            <div class="panel-title">买手列表</div>
+            <div class="panel-title">菜农列表</div>
         </li>
     </ul>
 </div>
@@ -33,7 +33,7 @@
             success     : function(data){
                 if(data && data.code == '000000') {
                 	var need = data.data || {};
-                	$('.mui-title').text('带点啥-'+need.title);
+                	$('.mui-title').text('卖菜通-'+need.title);
                 	if(need.status == 2) {
                 		$('.need-bottom-nav').hide();
                 	}

@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>带点啥</title>
+    <title>卖菜通</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -71,7 +71,7 @@
                     </div>
                     <div class="mui-text-right notice-msg">
                         <p>单位RMB,是否需要多加服务费用,建议跟买家沟通后再确定</p>
-                        <p>最终订单价格:买手确定的商品及邮寄费用+买家确定的服务费用</p>
+                        <p>最终订单价格:菜农确定的商品及邮寄费用+买家确定的服务费用</p>
                     </div>
                 </form>
                 <a class="order-submit"><span>提交</span></a>
@@ -81,7 +81,7 @@
     <div class="mui-inner-wrap">
         <header class="mui-bar mui-bar-nav">
             <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-            <h1 class="mui-title">带点啥-</h1>
+            <h1 class="mui-title">卖菜通-</h1>
             <a action="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>            
         </header>
         
@@ -122,7 +122,7 @@
                     <div class="dividing"></div>
                     <ul class="mui-table-view need-buyer-wrap">
                         <li class="mui-table-view-cell mui-table-panel mui-col-xs-12">
-                            <div class="panel-title">买手列表</div>
+                            <div class="panel-title">菜农列表</div>
                         </li>
                     </ul>
                 </div>
@@ -145,7 +145,7 @@
             success     : function(data){
                 if(data && data.code == '000000') {
                 	var need = data.data || {};
-                	$('.mui-title').text('带点啥-'+need.title);
+                	$('.mui-title').text('卖菜通-'+need.title);
                 
                 	if(need.status == 1) {
                 		if(need.acpFlag){

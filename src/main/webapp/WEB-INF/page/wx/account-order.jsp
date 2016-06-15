@@ -5,7 +5,7 @@
 </style>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-我的订单</h1>
+    <h1 class="mui-title">卖菜通-我的订单</h1>
     <a action="/wx/account" class="mui-icon mui-icon-person mui-pull-right"></a>
 </header>
 <nav class="comment-panel order-form" style="display:none">
@@ -23,7 +23,7 @@
 	            <div class="mui-input-range" style="padding:0px 10px 0px 80px;">
 		           <input type="range" id='block-range' value="5" min="1" max="5" >
 		        </div>
-	       </div
+	       </div>
        </div>
        <div class="mui-input-row" id="comment-pic">
            <label>追加图片</label>

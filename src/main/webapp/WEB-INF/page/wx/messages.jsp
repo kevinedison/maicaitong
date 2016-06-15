@@ -2,7 +2,7 @@
 <%@ include  file="common/header.jsp"%>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-消息</h1>
+    <h1 class="mui-title">卖菜通-消息</h1>
     <a action="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>
 </header>
 <nav class="mui-bar mui-bar-tab bottom-nav">
@@ -16,7 +16,7 @@
     </a>
     <a class="mui-tab-item buyers" action="/wx/buyers">
         <span class="mui-icon mui-icon-contact"></span>
-        <span class="mui-tab-label">买手</span>
+        <span class="mui-tab-label">菜农</span>
     </a>
     <a class="mui-tab-item messages mui-active" action="/wx/messages">
         <span class="mui-icon mui-icon-chatbubble"></span>

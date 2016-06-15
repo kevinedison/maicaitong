@@ -100,14 +100,14 @@ public class UserSessionFilter implements Filter
                     Responses.response(response, new ObjectMapper().writeValueAsString(resp));
                     return;
                 }
-                /**
+                
                 if (true)
                 {
                     UserInfo user = userManager.getUserInfo("o853pt5GcnBVYP0Tg1Fal9DJFXIk", true);
                     sessionManager.refreshUserSession(request, user);
                     response.sendRedirect("http://localhost:8080/wx/account");
                     return;
-                }*/
+                }
                 
                 // 微信回调地址
                 if (requestURL.equals("/user/auth"))

@@ -2,7 +2,7 @@
 <%@ include  file="common/header.jsp"%>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-</h1>
+    <h1 class="mui-title">卖菜通-</h1>
     <a href="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>
 </header>
 <div class="mui-content">
@@ -17,7 +17,7 @@
 
     <div id="slider" class="mui-slider">
         <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control chat-tabs">
-            <a class="mui-control-item mui-active" href="#buyer">买手列表</a>
+            <a class="mui-control-item mui-active" href="#buyer">菜农列表</a>
             <a class="mui-control-item" href="#service">商品列表</a>
         </div>
         <div class="mui-slider-group">
@@ -52,7 +52,7 @@
 	
 	            if (data && data.code == '000000'){
 	                if(!data.data.count || data.data.count == 0) {
-	                    $('.buyer-wrap').append('<li class="mui-table-view-cell mui-table-panel mui-col-xs-12 mui-text-center">没有买手</li>');
+	                    $('.buyer-wrap').append('<li class="mui-table-view-cell mui-table-panel mui-col-xs-12 mui-text-center">没有菜农</li>');
 	                    return;
 	                }
 	                if((page * daidian.config.pageSize) < data.data.count) {
@@ -109,11 +109,11 @@
 	                });
 	                $('.buyer-wrap').append(buyerHtml.join(''));
 	            }else{
-	                mui.toast('加载买手出现异常');
+	                mui.toast('加载菜农出现异常');
 	            }
 	        },
 	        error   :   function(){
-	            mui.toast('加载买手失败');
+	            mui.toast('加载菜农失败');
 	        }
 	    });
 	};
@@ -195,7 +195,7 @@
 	
 	var initCountry = function(country) {
 		var country = dataconfig.countrys[country] || {};
-	    $('.mui-title').text('带点啥-'+ country.name + ' ' + country.code);		
+	    $('.mui-title').text('卖菜通-'+ country.name + ' ' + country.code);		
  		var countryImage = [],countryIndicator = [],activeFlag = true;
  		
 		(country.picture||[]).forEach(function(pic){

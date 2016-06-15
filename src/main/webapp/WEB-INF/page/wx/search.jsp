@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>带点啥</title>
+    <title>卖菜通</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -14,7 +14,7 @@
 <body>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-</h1>
+    <h1 class="mui-title">卖菜通-</h1>
 </header>
 <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
     <div class="mui-scroll">
@@ -112,7 +112,7 @@
 	$(function() {
 		var searchType = getQueryString('type') || 'milk';
 		var category = daidian.categorys[searchType];
- 	    $('.mui-title').text('带点啥-'+category.name);
+ 	    $('.mui-title').text('卖菜通-'+category.name);
  	    
  	    mui('#offCanvasContentScroll').scroll();
  	    

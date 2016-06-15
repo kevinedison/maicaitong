@@ -4,7 +4,7 @@
 <link href="/resources/wx/css/mui.poppicker.css" rel="stylesheet" />
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-订单</h1>
+    <h1 class="mui-title">卖菜通-订单</h1>
 </header>
 
 <nav class="mui-bar mui-bar-tab pay-result-nav" style="display:none" time=5>
@@ -30,7 +30,7 @@
     <div class="buyer-identifying"></div> 
     <ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
         <li class="mui-table-view-cell mui-table-panel mui-col-xs-12">
-            <div class="panel-title">买手信息</div>
+            <div class="panel-title">菜农信息</div>
         </li>
         <li class="mui-table-view-cell saler-info" style="height:150px;"></li>
     </ul>
@@ -94,10 +94,10 @@
             <div class="panel-title">支付方式</div>
         </li>
         <!--li class="mui-table-view-cell mui-radio mui-left">
-			<input name="paytype" type="radio" value="1" checked="checked">直接支付给买手
+			<input name="paytype" type="radio" value="1" checked="checked">直接支付给菜农
 		</li-->
 		<li class="mui-table-view-cell mui-radio mui-left">
-			<input name="paytype" type="radio" value="0" checked="checked">带点啥平台担保支付
+			<input name="paytype" type="radio" value="0" checked="checked">卖菜通平台担保支付
 		</li>
     </form>
 </div>

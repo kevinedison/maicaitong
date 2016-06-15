@@ -142,12 +142,12 @@ var checkSession = function() {
 var getShareContent = function(type) {
 	var href = window.location.href;
 	var content = {};
-	content.title='带点啥-最放心的海淘';
+	content.title='卖菜通-最放心的果蔬交易平台';
 	content.link=href;
 	content.imgUrl='http://image.acarry.com/images/daidiansha-logo.png';
 	
 	if(type == 'app') {
-		content.desc = '找海外可靠买手购买直邮回国';
+		content.desc = '找可靠菜农购买放心果蔬';
 		content.type='link';
 		content.dataUrl='';
 	} else {}
@@ -166,12 +166,12 @@ var getShareContent = function(type) {
 	}
 	
 	if(href.indexOf('/wx/user') > 0) {
-		content.title = "带点啥-" + ($('.user-profile .user-name').text() || '');
-		content.desc = '带点啥平台实名认证的明星买手';
+		content.title = "卖菜通-" + ($('.user-profile .user-name').text() || '');
+		content.desc = '卖菜通平台实名认证的明星菜农';
 		content.imgUrl = $('.user-profile .user-img img').attr('src'); // 分享图标	
 	} else if(href.indexOf('/wx/service') > 0) {
-		content.title = $('.service-info .service-title').text() || '带点啥-最放心的海淘';
-		content.desc = $('.service-info .service-desc').text() || '找海外可靠买手购买直邮回国'
+		content.title = $('.service-info .service-title').text() || '卖菜通-最放心的果蔬交易平台';
+		content.desc = $('.service-info .service-desc').text() || '找可靠菜农购买放心果蔬'
 		content.imgUrl = $('.service-info .mui-media-object').attr('src'); // 分享图标
 	}	
 	

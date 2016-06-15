@@ -11,7 +11,7 @@
 </style>
 <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">带点啥-我的账号</h1>
+    <h1 class="mui-title">卖菜通-我的账号</h1>
     <a action="/wx/top" class="mui-icon mui-icon-home mui-pull-right"></a>
 </header>
 <nav class="mui-bar mui-bar-tab bottom-nav">
@@ -25,7 +25,7 @@
     </a>
     <a class="mui-tab-item buyers" action="/wx/buyers">
         <span class="mui-icon mui-icon-contact"></span>
-        <span class="mui-tab-label">买手</span>
+        <span class="mui-tab-label">菜农</span>
     </a>
     <a class="mui-tab-item messages" action="/wx/messages">
         <span class="mui-icon mui-icon-chatbubble"></span>
@@ -126,9 +126,9 @@
             </a>
         </li>
         <li class="mui-table-view-cell">
-            <a class="mui-navigate-right buyer-apply" action="/wx/account-buyer" ><span class="mui-icon mui-icon-location" style="color:#dd524d"></span> 买手认证</a>
+            <a class="mui-navigate-right buyer-apply" action="/wx/account-buyer" ><span class="mui-icon mui-icon-location" style="color:#dd524d"></span> 菜农认证</a>
         </li>
-        <p class="notice-msg">申请成为买手,利用空闲时间赚零花钱</p>
+        <p class="notice-msg">申请成为菜农,在平台上销售自己的产品</p>
     </ul>
 
     <ul class="mui-table-view buyer-subMenu" style="margin-top: 15px;display:none">
@@ -154,13 +154,13 @@
             </nav>
         </li>
         <li class="mui-table-view-cell">
-            <a class="mui-navigate-right" action="/wx/account-buyer">买手信息变更</a>
+            <a class="mui-navigate-right" action="/wx/account-buyer">菜农信息变更</a>
         </li>
     </ul>
 
     <div class="buyer-agreement">
        <a action="/wx/agreement-user" class="text-center local-info"> 「查看用户协议」 </a>
-      |<a action="/wx/agreement-buyer" class="text-center local-info"> 「查看买手协议」 </a>
+      |<a action="/wx/agreement-buyer" class="text-center local-info"> 「查看菜农协议」 </a>
     </div>
 </div>
 <%@ include  file="common/js.jsp"%>
@@ -200,9 +200,9 @@
     	} else {
     		$('.user-subMenu').fadeIn(100);
     		if(identityAuth == 2) {
-    			$('.buyer-apply').html('<span style="color:red">买手认证中</span>');
+    			$('.buyer-apply').html('<span style="color:red">菜农认证中</span>');
     		} else if(identityAuth == 3) {
-    			$('.buyer-apply').html('<span style="color:red">买手认证失败</span>');
+    			$('.buyer-apply').html('<span style="color:red">菜农认证失败</span>');
     		}
     		if(countObj['waitPay'] && countObj['waitPay'] > 0) {
     			$('.user-pay').html('<span class="mui-badge">'+countObj['waitPay']+'</span>');
